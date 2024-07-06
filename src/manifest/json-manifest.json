@@ -1,0 +1,373 @@
+{
+  "bundles": [
+    {
+      "name": "default",
+      "assets": [
+        {
+          "name": "animations/animation-set.json",
+          "srcs": [
+            "animations/animation-set.json"
+          ]
+        },
+        {
+          "name": "combinations.json",
+          "srcs": [
+            "combinations.json"
+          ]
+        },
+        {
+          "name": "commit-hash.json",
+          "srcs": [
+            "commit-hash.json"
+          ]
+        },
+        {
+          "name": "emitters/blood1.json",
+          "srcs": [
+            "emitters/blood1.json"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "horde",
+      "assets": [
+        {
+          "name": "horde/entity/enemies.json",
+          "srcs": [
+            "horde/entity/enemies.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/entity/enemyView.json",
+          "srcs": [
+            "horde/entity/enemyView.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/entity/entities.json",
+          "srcs": [
+            "horde/entity/entities.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/entity/entityView.json",
+          "srcs": [
+            "horde/entity/entityView.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/city.json",
+          "srcs": [
+            "horde/level/city.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/city2.json",
+          "srcs": [
+            "horde/level/city2.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/forest1.json",
+          "srcs": [
+            "horde/level/forest1.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/forest1tileset.json",
+          "srcs": [
+            "horde/level/forest1tileset.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/forestTextures.json",
+          "srcs": [
+            "horde/level/forestTextures.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/graveyard1.json",
+          "srcs": [
+            "horde/level/graveyard1.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/graveyard2.json",
+          "srcs": [
+            "horde/level/graveyard2.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/graveyardTileset.json",
+          "srcs": [
+            "horde/level/graveyardTileset.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/masterTileset.json",
+          "srcs": [
+            "horde/level/masterTileset.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/simpleBounds.json",
+          "srcs": [
+            "horde/level/simpleBounds.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/survive-props.json",
+          "srcs": [
+            "horde/level/survive-props.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/test2.json",
+          "srcs": [
+            "horde/level/test2.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/textures.json",
+          "srcs": [
+            "horde/level/textures.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/urban1.json",
+          "srcs": [
+            "horde/level/urban1.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/urban1tileset.json",
+          "srcs": [
+            "horde/level/urban1tileset.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/level/urban2tileset.json",
+          "srcs": [
+            "horde/level/urban2tileset.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/teste.json",
+          "srcs": [
+            "horde/teste.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/waves/level1.json",
+          "srcs": [
+            "horde/waves/level1.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/weapon/weapons.json",
+          "srcs": [
+            "horde/weapon/weapons.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "horde/weapon/weaponView.json",
+          "srcs": [
+            "horde/weapon/weaponView.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "unit",
+      "assets": [
+        {
+          "name": "unit/shapes.json",
+          "srcs": [
+            "unit/shapes.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "unit/synergyTable.json",
+          "srcs": [
+            "unit/synergyTable.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "unit/unitAbilities.json",
+          "srcs": [
+            "unit/unitAbilities.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "unit/unitAttributes.json",
+          "srcs": [
+            "unit/unitAttributes.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "unit/units.json",
+          "srcs": [
+            "unit/units.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "unit/unitsView.json",
+          "srcs": [
+            "unit/unitsView.json"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

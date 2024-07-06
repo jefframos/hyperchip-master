@@ -1,0 +1,1 @@
+{"entity":[{"id":"zombie1","type":1,"sharedEntityView":["zombie1","zombie2","zombie3","zombie4"],"behaviour":1,"health":[100,200,300],"defense":[10],"attack":[10],"speed":[10]}]}

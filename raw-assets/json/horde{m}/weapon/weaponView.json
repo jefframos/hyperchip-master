@@ -1,0 +1,107 @@
+{
+  "weapons": [
+    {
+      "type": "Pistol",
+      "shootVfx": "blue-impact",
+      "shootVfxFps": 24,
+      "impactVfx": "blue-impact",
+      "impactVfxFps": 24,
+      "bulletView": "ZombieSurvival_pistol_Bullet_east",
+      "weaponIcon": "pistol-gun",
+      "weaponInGamePath": "Soldiers_pistol/Soldiers_pistol_",
+      "weaponOffset": {
+        "x": 0,
+        "y": -30,
+        "z": 0
+      },
+      "weaponShootDistance": 25,
+      "weaponOffsetDistance": 5
+    },
+    {
+      "type": "Revolver",
+      "shootVfx": "red-impact",
+      "shootVfxFps": 24,
+      "impactVfx": "red-explosion-1",
+      "impactVfxFps": 24,
+      "bulletView": "ZombieSurvival_pistol_Bullet_east",
+      "weaponIcon": "luger",
+      "weaponInGamePath": "ZombieSurvival_pistol/ZombieSurvival_pistol_",
+      "weaponOffset": {
+        "x": 0,
+        "y": -30,
+        "z": 0
+      },
+      "weaponShootDistance": 25,
+      "weaponOffsetDistance": 5
+    },
+    {
+      "type": "Rifle",
+      "shootVfx": "smoke3",
+      "shootVfxFps": 120,
+      "impactVfx": "smoke3",
+      "impactVfxFps": 120,
+      "bulletView": "Soldiers_rifle_magazine_bullet_1_east",
+      "weaponIcon": "uzi",
+      "weaponInGamePath": "Soldiers_assaultRifle/Soldiers_assaultRifle_",
+      "weaponOffset": {
+        "x": 0,
+        "y": -50,
+        "z": 0
+      },
+      "weaponShootDistance": 40,
+      "weaponOffsetDistance": 40,
+      "mainScale": 0.7
+    },
+    {
+      "type": "Shotgun",
+      "shootVfx": "purple-impact",
+      "shootVfxFps": 24,
+      "impactVfx": "purple-explosion-1",
+      "impactVfxFps": 24,
+      "bulletView": "Soldiers_SMG_magazine_bullet_1_east",
+      "weaponIcon": "lee-enfield",
+      "weaponInGamePath": "Soldiers_SMG_1/Soldiers_SMG_1_",
+      "weaponOffset": {
+        "x": 0,
+        "y": -15,
+        "z": 0
+      },
+      "weaponShootDistance": 30,
+      "weaponOffsetDistance": 30
+    },
+    {
+      "type": "Sniper",
+      "shootVfx": "red-impact",
+      "shootVfxFps": 24,
+      "impactVfx": "red-explosion-1",
+      "impactVfxFps": 24,
+      "bulletView": "Soldiers_rifle_magazine_bullet_1_east",
+      "weaponIcon": "steyr-aug",
+      "weaponInGamePath": "Soldiers_sniperRifle/Soldiers_sniperRifle_",
+      "weaponOffset": {
+        "x": 0,
+        "y": -50,
+        "z": 0
+      },
+      "weaponShootDistance": 50,
+      "weaponOffsetDistance": 50
+    },
+    {
+      "type": "Sword",
+      "shootVfx": "melee_white",
+      "shootVfxFps": 24,
+      "impactVfx": "null",
+      "impactVfxFps": 24,
+      "bulletView": null,
+      "weaponIcon": "steyr-aug",
+      "weaponInGamePath": "ZombieSurvival_knife/ZombieSurvival_knife_",
+      "weaponOffset": {
+        "x": 0,
+        "y": -50,
+        "z": 0
+      },
+      "weaponShootDistance": 20,
+      "weaponOffsetDistance": 5
+    }
+  ]
+}

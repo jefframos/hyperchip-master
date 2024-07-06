@@ -1,0 +1,49 @@
+{
+  "bundles": [
+    {
+      "name": "default",
+      "assets": [
+        {
+          "name": "images/template/template.json",
+          "srcs": [
+            "images/template/template@1x.json",
+            "images/template/template@0.5x.json"
+          ],
+          "data": {
+            "tags": {
+              "tps": true
+            }
+          }
+        },
+        {
+          "name": "json/combinations.json",
+          "srcs": [
+            "json/combinations.json"
+          ]
+        },
+        {
+          "name": "style/webfonts/Poppins-Bold.ttf",
+          "srcs": [
+            "style/webfonts/Poppins-Bold.woff2"
+          ],
+          "data": {
+            "tags": {
+              "wf": true
+            }
+          }
+        },
+        {
+          "name": "style/webfonts/Poppins-Regular.ttf",
+          "srcs": [
+            "style/webfonts/Poppins-Regular.woff2"
+          ],
+          "data": {
+            "tags": {
+              "wf": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

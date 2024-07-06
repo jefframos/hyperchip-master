@@ -1,0 +1,69 @@
+{
+  "bundles": [
+    {
+      "name": "default",
+      "assets": []
+    },
+    {
+      "name": "master",
+      "assets": [
+        {
+          "name": "master/shared/shared.json",
+          "srcs": [
+            "master/shared/shared@1x.json",
+            "master/shared/shared@0.5x.json"
+          ],
+          "data": {
+            "tags": {
+              "tps": true,
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "master/textures/tiles1.png",
+          "srcs": [
+            "master/textures/tiles1.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "template",
+      "assets": [
+        {
+          "name": "template/ui/ui.json",
+          "srcs": [
+            "template/ui/ui@1x.json",
+            "template/ui/ui@0.5x.json"
+          ],
+          "data": {
+            "tags": {
+              "tps": true,
+              "m": true
+            }
+          }
+        },
+        {
+          "name": "template/vfx_template/vfx_template.json",
+          "srcs": [
+            "template/vfx_template/vfx_template@1x.json",
+            "template/vfx_template/vfx_template@0.5x.json"
+          ],
+          "data": {
+            "tags": {
+              "a": true,
+              "tps": true,
+              "m": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "bundles": [
+    {
+      "name": "default",
+      "assets": [
+        {
+          "name": "bitmap/poppins-emerald.png",
+          "srcs": [
+            "bitmap/poppins-emerald.png"
+          ]
+        },
+        {
+          "name": "bitmap/poppins-emerald.xml",
+          "srcs": [
+            "bitmap/poppins-emerald.xml"
+          ]
+        },
+        {
+          "name": "bitmap/poppins-gold.png",
+          "srcs": [
+            "bitmap/poppins-gold.png"
+          ]
+        },
+        {
+          "name": "bitmap/poppins-gold.xml",
+          "srcs": [
+            "bitmap/poppins-gold.xml"
+          ]
+        },
+        {
+          "name": "webfonts/FiraSans-Bold.ttf",
+          "srcs": [
+            "webfonts/FiraSans-Bold.woff2"
+          ],
+          "data": {
+            "tags": {
+              "wf": true
+            }
+          }
+        },
+        {
+          "name": "webfonts/FiraSans-Regular.ttf",
+          "srcs": [
+            "webfonts/FiraSans-Regular.woff2"
+          ],
+          "data": {
+            "tags": {
+              "wf": true
+            }
+          }
+        },
+        {
+          "name": "webfonts/Poppins-Bold.ttf",
+          "srcs": [
+            "webfonts/Poppins-Bold.woff2"
+          ],
+          "data": {
+            "tags": {
+              "wf": true
+            }
+          }
+        },
+        {
+          "name": "webfonts/Poppins-Regular.ttf",
+          "srcs": [
+            "webfonts/Poppins-Regular.woff2"
+          ],
+          "data": {
+            "tags": {
+              "wf": true
+            }
+          }
+        },
+        {
+          "name": "webfonts/renogare-regular-webfont.woff2",
+          "srcs": [
+            "webfonts/renogare-regular-webfont.woff2"
+          ],
+          "data": {
+            "tags": {
+              "wf": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

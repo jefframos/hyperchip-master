@@ -1,0 +1,28 @@
+{
+  "bundles": [
+    {
+      "name": "preload",
+      "assets": [
+        {
+          "srcs": "preload/bird-icon.png",
+          "name": "bird-icon"
+        }
+      ]
+    },
+    {
+      "name": "bitmapFonts",
+      "assets": [
+        {
+          "xmlPath": "./style/bitmap/poppins-emerald.xml",
+          "xmlFileName": "poppins-emerald",
+          "fileName": "./style/bitmap/poppins-emerald.png"
+        },
+        {
+          "xmlPath": "./style/bitmap/poppins-gold.xml",
+          "xmlFileName": "poppins-gold",
+          "fileName": "./style/bitmap/poppins-gold.png"
+        }
+      ]
+    }
+  ]
+}

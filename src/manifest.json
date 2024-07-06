@@ -1,0 +1,20 @@
+[
+  {
+    "type": "image",
+    "filename": "image-manifest",
+    "path": "image-manifest.json"
+  },
+  {
+    "type": "json",
+    "filename": "json-manifest",
+    "path": "json-manifest.json"
+  },
+  {
+    "type": "preload",
+    "assets": []
+  },
+  {
+    "type": "bitmapFonts",
+    "assets": []
+  }
+]
