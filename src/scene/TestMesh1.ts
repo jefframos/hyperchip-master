@@ -65,7 +65,7 @@ export default class TestMesh1 extends GameObject {
     constructor() {
         super()
 
-        this.container = this.poolComponent(GameViewContainer)
+        this.container = this.poolComponent(GameViewContainer, true)
 
         const shaderProgram = new PIXI.Program(this.vertexSrc, this.fragmentSrc, 'mestTest1')
 
@@ -86,7 +86,9 @@ export default class TestMesh1 extends GameObject {
         const shaderMesh = new PIXI.Mesh<PIXI.Shader>(mesh.geometry, new PIXI.Shader(shaderProgram, uniforms))
         this.container.view.addChild(shaderMesh)
 
-        console.log(shaderMesh)
+        // const sprite = PIXI.Sprite.from('testTexture2.png')
+        // this.container.view.addChild(sprite)
+        // console.log(shaderMesh)
     }
     build() {
         super.build();
