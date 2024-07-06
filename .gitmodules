@@ -1,0 +1,6 @@
+[submodule "loggie"]
+	path = loggie
+	url = https://github.com/jefframos/loggie.git
+[submodule "rivie"]
+	path = rivie
+	url = https://github.com/jefframos/rivie.git
