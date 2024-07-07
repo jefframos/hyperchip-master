@@ -1,6 +1,26 @@
 {
   "bundles": [
     {
+      "name": "audio",
+      "filename": "audio-manifest",
+      "assets": [
+        {
+          "srcs": "..\\public\\audio-manifest.json",
+          "name": "audio-manifest"
+        }
+      ]
+    },
+    {
+      "name": "shader",
+      "filename": "shader-manifest",
+      "assets": [
+        {
+          "srcs": "..\\public\\shader-manifest.json",
+          "name": "shader-manifest"
+        }
+      ]
+    },
+    {
       "name": "preload",
       "assets": [
         {

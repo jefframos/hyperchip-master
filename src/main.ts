@@ -1,9 +1,11 @@
+import * as PIXI from 'pixi.js';
+
+import PerspectiveCamera, { CameraViewType } from 'loggie/core/camera/PerspectiveCamera';
+
+import CameraSimplifiedPerspective from 'loggie/core/camera/CameraSimplifiedPerspective';
+import HyperchipScene from './scene/HyperchipScene';
 import LoggieApplication from 'loggie/LoggieApplication';
 import LoggieSettings from 'loggie/LoggieSettings';
-import CameraSimplifiedPerspective from 'loggie/core/camera/CameraSimplifiedPerspective';
-import * as PIXI from 'pixi.js';
-import HyperchipScene from './scene/HyperchipScene';
-
 
 LoggieApplication.app = new PIXI.Application<HTMLCanvasElement>({
     resolution: Math.min(window.devicePixelRatio, 1),
@@ -22,20 +24,20 @@ const config: LoggieSettings = {
         },
     },
     cameraSettings: {
-        cameraConstructor: CameraSimplifiedPerspective,
-        // cameraConstructor: PerspectiveCamera,
-        // cameraAttributes: {
-        //     fov: 90,
-        //     aspect: 19 / 6,
-        //     near: 0.1,
-        //     far: 1000,
-        //     yOffsetFactor: 0.21,
-        //     minScale: 0,
-        //     cameraY: 0,
-        //     cameraX: 0,
-        //     cameraZ: 0,
-        //     cameraViewType: CameraViewType.HorizontalDistortion
-        // }
+        //cameraConstructor: CameraSimplifiedPerspective,
+        cameraConstructor: PerspectiveCamera,
+        cameraAttributes: {
+            fov: 90,
+            aspect: 19 / 6,
+            near: 0.1,
+            far: 1000,
+            yOffsetFactor: 0.21,
+            minScale: 0,
+            cameraY: 0,
+            cameraX: 0,
+            cameraZ: 0,
+            cameraViewType: CameraViewType.HorizontalDistortion
+        }
     },
     // cameraSettings: {
     //     cameraConstructor: PerspectiveCamera,
