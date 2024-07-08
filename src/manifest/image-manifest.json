@@ -8,6 +8,19 @@
       "name": "master",
       "assets": [
         {
+          "name": "master/games/games.json",
+          "srcs": [
+            "master/games/games@1x.json",
+            "master/games/games@0.5x.json"
+          ],
+          "data": {
+            "tags": {
+              "tps": true,
+              "m": true
+            }
+          }
+        },
+        {
           "name": "master/shared/shared.json",
           "srcs": [
             "master/shared/shared@1x.json",

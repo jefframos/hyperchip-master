@@ -2,10 +2,9 @@ import * as PIXI from 'pixi.js';
 
 import PerspectiveCamera, { CameraViewType } from 'loggie/core/camera/PerspectiveCamera';
 
-import CameraSimplifiedPerspective from 'loggie/core/camera/CameraSimplifiedPerspective';
-import HyperchipScene from './scene/HyperchipScene';
 import LoggieApplication from 'loggie/LoggieApplication';
 import LoggieSettings from 'loggie/LoggieSettings';
+import HyperchipScene from './scene/HyperchipScene';
 
 LoggieApplication.app = new PIXI.Application<HTMLCanvasElement>({
     resolution: Math.min(window.devicePixelRatio, 1),
@@ -27,7 +26,7 @@ const config: LoggieSettings = {
         //cameraConstructor: CameraSimplifiedPerspective,
         cameraConstructor: PerspectiveCamera,
         cameraAttributes: {
-            fov: 90,
+            fov: 120,
             aspect: 19 / 6,
             near: 0.1,
             far: 1000,
@@ -36,7 +35,7 @@ const config: LoggieSettings = {
             cameraY: 0,
             cameraX: 0,
             cameraZ: 0,
-            cameraViewType: CameraViewType.HorizontalDistortion
+            cameraViewType: CameraViewType.FishEye
         }
     },
     // cameraSettings: {

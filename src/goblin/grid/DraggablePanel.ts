@@ -21,6 +21,7 @@ export default class DraggablePanel extends GameObject {
     public onDragStart: Signal = new Signal();
     public onDragEnd: Signal = new Signal();
     public onDragUpdate: Signal = new Signal();
+    public onRelativeDragUpdate: Signal = new Signal();
 
     build() {
         super.build();
@@ -84,6 +85,7 @@ export default class DraggablePanel extends GameObject {
                 return;
             }
             this.onDragUpdate.dispatch(this.currentPoint.x, this.currentPoint.y)
+            this.onRelativeDragUpdate.dispatch(this.currentPoint.x - this.startPoint.x, this.currentPoint.y - this.startPoint.y)
         }
     }
 
@@ -114,6 +116,7 @@ export default class DraggablePanel extends GameObject {
         this.currentPoint.y += this.velocity.y;
 
         this.onDragUpdate.dispatch(this.currentPoint.x, this.currentPoint.y)
+        this.onRelativeDragUpdate.dispatch(this.currentPoint.x - this.startPoint.x, this.currentPoint.y - this.startPoint.y)
 
         if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
             requestAnimationFrame(this.applyInertia.bind(this));

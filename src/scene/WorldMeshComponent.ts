@@ -3,9 +3,9 @@ import * as PIXI from 'pixi.js';
 import MeshUtils, { MeshConfig } from 'loggie/core/mesh/MeshUtils';
 
 import GameObject from 'loggie/core/gameObject/GameObject';
-import GameViewMesh from 'loggie/core/view/GameViewMesh';
-import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import Vector3 from 'loggie/core/gameObject/Vector3';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
+import GameViewMesh from 'loggie/core/view/GameViewMesh';
 
 export default class WorldMeshComponent extends GameViewMesh {
 
@@ -88,10 +88,11 @@ export default class WorldMeshComponent extends GameViewMesh {
 
 
         this.layer = RenderLayers.FloorBottom
-        this.meshConfig = { width: 256, height: 256, segmentsX: 10, segmentsY: 10, anchor: new Vector3(0.5, 0.5, 0) } as MeshConfig
+        this.meshConfig = { width: 512, height: 512, segmentsX: 10, segmentsY: 10, anchor: new Vector3(0.5, 0.5, 0) } as MeshConfig
         const meshData = MeshUtils.makeStandardMesh(this.meshConfig, new PIXI.Shader(shaderProgram, uniforms))
         this.vertices = meshData.meshData.vertices
         this.mesh = meshData.mesh
+
     }
     build(textureId: string | null, meshConfig?: MeshConfig) {
         super.build(textureId, meshConfig);
