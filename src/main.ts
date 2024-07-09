@@ -26,7 +26,7 @@ const config: LoggieSettings = {
         //cameraConstructor: CameraSimplifiedPerspective,
         cameraConstructor: PerspectiveCamera,
         cameraAttributes: {
-            fov: 120,
+            fov: 130,
             aspect: 19 / 6,
             near: 0.1,
             far: 1000,

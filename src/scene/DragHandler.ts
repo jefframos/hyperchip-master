@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+
 export default class DragHandler {
     private prevX: number = 0;
     private prevY: number = 0;
@@ -6,8 +7,7 @@ export default class DragHandler {
     private currentY: number = 0;
     private startTime: number = 0;
     private endTime: number = 0;
-    private velocityX: number = 0;
-    private velocityY: number = 0;
+    private velocity: PIXI.Point = new PIXI.Point(0, 0);
     private isDragging: boolean = false;
     private inertiaInterval: number = 10; // Interval for applying inertia in milliseconds
     private inertiaId: number | null = null;
@@ -16,9 +16,9 @@ export default class DragHandler {
     constructor() {
         // Initialize event listeners or setup for drag events
         // For example, mouse or touch event listeners
-        document.addEventListener('mousedown', this.onMouseDown.bind(this));
-        document.addEventListener('mousemove', this.onMouseMove.bind(this));
-        document.addEventListener('mouseup', this.onMouseUp.bind(this));
+        document.addEventListener('pointerdown', this.onMouseDown.bind(this));
+        document.addEventListener('pointermove', this.onMouseMove.bind(this));
+        document.addEventListener('pointerup', this.onMouseUp.bind(this));
     }
 
     onMouseDown(event: MouseEvent) {
@@ -41,8 +41,10 @@ export default class DragHandler {
             let deltaTime = this.endTime - this.startTime;
             let deltaX = this.currentX - this.prevX;
             let deltaY = this.currentY - this.prevY;
-            this.velocityX = deltaX / deltaTime; // Velocity in pixels per millisecond
-            this.velocityY = deltaY / deltaTime; // Velocity in pixels per millisecond
+
+            // Buffer the velocity and ensure it's never infinity
+            this.velocity.x = deltaTime !== 0 ? deltaX / deltaTime : 0; // Velocity in pixels per millisecond
+            this.velocity.y = deltaTime !== 0 ? deltaY / deltaTime : 0; // Velocity in pixels per millisecond
 
             // Update previous positions and time
             this.prevX = this.currentX;
@@ -57,27 +59,23 @@ export default class DragHandler {
         this.endTime = 0;
 
         // Apply inertia if there's velocity
-        if (Math.abs(this.velocityX) > 0 || Math.abs(this.velocityY) > 0) {
+        if (Math.abs(this.velocity.x) > 0 || Math.abs(this.velocity.y) > 0) {
             this.applyInertia();
         }
     }
 
     private applyInertia() {
         const applyInertiaFrame = () => {
-            this.velocityX *= this.dampingFactor;
-            this.velocityY *= this.dampingFactor;
+            this.velocity.x *= this.dampingFactor;
+            this.velocity.y *= this.dampingFactor;
 
             // Update positions based on velocity
-            this.prevX += this.velocityX * this.inertiaInterval;
-            this.prevY += this.velocityY * this.inertiaInterval;
-
-            // Trigger a move event as if the user is still dragging
-            // You may have your own logic to handle the movement update
-            // For demonstration, let's console log the positions
-            //console.log(`Simulated Movement - X: ${this.prevX.toFixed(2)}, Y: ${this.prevY.toFixed(2)}`);
+            this.prevX += this.velocity.x * this.inertiaInterval;
+            this.prevY += this.velocity.y * this.inertiaInterval;
 
             // Continue applying inertia until velocity is negligible
-            if (Math.abs(this.velocityX) > 0.01 || Math.abs(this.velocityY) > 0.01) {
+            if (Math.abs(this.velocity.x) > 0.01 || Math.abs(this.velocity.y) > 0.01) {
+
                 this.inertiaId = window.requestAnimationFrame(applyInertiaFrame);
             } else {
                 this.clearInertia();
@@ -91,12 +89,13 @@ export default class DragHandler {
         if (this.inertiaId !== null) {
             window.cancelAnimationFrame(this.inertiaId);
             this.inertiaId = null;
+            this.velocity.x = 0
+            this.velocity.y = 0
         }
     }
 
     // Expose velocity for external use
     public getVelocity(): PIXI.Point {
-        return new PIXI.Point(this.velocityX, this.velocityY);
+        return this.velocity.clone();
     }
-
 }

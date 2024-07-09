@@ -1,14 +1,14 @@
 import * as PIXI from 'pixi.js';
 
-import Camera from 'loggie/core/camera/Camera';
+import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
 import GameObject from 'loggie/core/gameObject/GameObject';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
+import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import GameViewSprite from 'loggie/core/view/GameViewSprite';
 import GameViewUtils from 'loggie/core/view/GameViewUtils';
-import MathUtils from 'loggie/utils/MathUtils';
+import Spring from 'loggie/utils/Spring';
 import SpringPosition from 'loggie/utils/SpringPosition';
 import ViewUtils from 'loggie/utils/ViewUtils';
-import DraggablePanel from '../goblin/grid/DraggablePanel';
 import MeshGrid from './MeshGrid';
 
 export default class HyperchipGame extends GameObject {
@@ -18,9 +18,17 @@ export default class HyperchipGame extends GameObject {
     private meshGrid?: MeshGrid;
 
     private mapCenter!: GameObject;
+    private debug!: GameObject;
+    private text: PIXI.Text = new PIXI.Text();;
+    private debugContainer!: GameViewContainer
     private cameraOffset: PIXI.Point = new PIXI.Point(0, 0);
     private worldVelocity: PIXI.Point = new PIXI.Point(0, 0);
     private sprintRotation: SpringPosition = new SpringPosition();
+
+    private targetFov = 130
+    private springPov: Spring = new Spring(800, 25, 1)
+    private perspCamera?: PerspectiveCamera;
+    private worldCollapsed: boolean = false;
 
     constructor() {
         super()
@@ -28,33 +36,37 @@ export default class HyperchipGame extends GameObject {
     build() {
         super.build();
 
-        this.pinkMask = GameViewUtils.makeSprite(this, PIXI.Texture.from('pink-mask'), RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
+        this.pinkMask = GameViewUtils.makeSprite(this, PIXI.Texture.from('pink-mask'), RenderLayers.FrontLayer).findComponent<GameViewSprite>(GameViewSprite)
+        this.pinkMask.ignoreCameraPerspective = true;
+        this.pinkMask.ignoreCameraScale = true;
+        this.pinkMask.view.anchor.set(0.5)
         this.topVignette = GameViewUtils.makeSprite(this, PIXI.Texture.from('top-glow'), RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
         this.logo = GameViewUtils.makeSprite(this, PIXI.Texture.from('logo'), RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
         this.meshGrid = this.poolGameObject(MeshGrid, true)
 
-        const drag = this.poolGameObject(DraggablePanel, true, this.mapCenter) as DraggablePanel
 
         const mapMover = new PIXI.Point();
+        this.debug = this.poolGameObject(GameObject, true);
+        const container = this.debug.poolComponent(GameViewContainer, true, RenderLayers.UILayerOverlay)
+        container.addChild(this.text)
+        this.text.text = 'TESTE'
+        this.debug.x = 300
         this.mapCenter = this.poolGameObject(GameObject, true);
-        //this.mapCenter.poolComponent(GameViewGraphics, true).view.beginFill(0xFF0000).drawCircle(0, 0, 10)
-        drag.onDragStart.add(() => {
-            //const targetPoint = this.loggie.mainCamera.pointToCamera(this.mapCenter.x, 0, this.mapCenter.z)
-            mapMover.x = this.cameraOffset.x
-            mapMover.y = this.cameraOffset.y
-        })
+        //this.mapCenter.poolComponent(GameViewGraphics, true).view.beginFill(0xFF0000).drawCircle(0, 0, 10)   
 
-        drag.onDragUpdate.add((x: number, y: number) => {
-            const targetX = mapMover.x - x / Camera.Zoom
-            const targetY = mapMover.y - y / Camera.Zoom
-            if (MathUtils.distance(targetX, targetY, this.cameraOffset.x, this.cameraOffset.y) < 100) {
-                this.sprintRotation.setTarget(x * 0.005, y * 0.005)
-            }
-        })
+        this.springPov.setPosition(130)
+        this.springPov.setTarget(130)
+        this.logo.view.interactive = true;
+        this.logo.view.cursor = 'pointer'
+        this.logo.view.onpointerup = (e) => {
+            this.worldCollapsed = !this.worldCollapsed;
 
-        drag.onDragEnd.add(() => {
-            this.sprintRotation.setTarget(0, 0)
-        })
+            this.meshGrid.moveToId(2)
+        }
+
+        if (this.loggie.mainCamera instanceof PerspectiveCamera) {
+            this.perspCamera = this.loggie.mainCamera as PerspectiveCamera;
+        }
 
     }
     update(delta: number, unscaledTime: number) {
@@ -63,14 +75,25 @@ export default class HyperchipGame extends GameObject {
         if (this.logo) {
             if (PIXI.isMobile.any) {
 
-                this.logo.view.scale.set(ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.4, this.loggie.overlay.right * 0.4))
+                this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.4, this.loggie.overlay.right * 0.4)))
             } else {
 
                 this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.2, this.loggie.overlay.right * 0.2)))
             }
         }
 
+        this.springPov.update(delta);
+        if (this.perspCamera) {
+            this.perspCamera.cameraAttributes.fov = this.springPov.getPosition();
+        }
         this.sprintRotation.update(delta)
+
+        if (this.worldCollapsed) {
+            this.springPov.setTarget(-100)
+        } else {
+            this.springPov.setTarget(130)
+
+        }
         // if (this.loggie.mainCamera instanceof PerspectiveCamera) {
 
         //     // this.loggie.mainCamera.transform.rotation.x = 50 + this.sprintRotation.getPosition().y;
