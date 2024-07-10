@@ -26,6 +26,12 @@
           "srcs": [
             "emitters/blood1.json"
           ]
+        },
+        {
+          "name": "gameData.json",
+          "srcs": [
+            "gameData.json"
+          ]
         }
       ]
     },

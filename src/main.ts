@@ -60,7 +60,7 @@ const config: LoggieSettings = {
             debugRigidBody: false
         },
         debuggerSettings: {
-            enable: true,
+            enable: false,
             enablePIXIInspector: false
         }
     }

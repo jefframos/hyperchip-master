@@ -1,0 +1,94 @@
+{
+    "games": [
+        {
+            "id": "MUTAZONE",
+            "name": "Mutazone",
+            "mainThumb": "Layer 1",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "Mutazone",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 1"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI"
+        },
+        {
+            "id": "MUTAZONE2",
+            "name": "Mutazone",
+            "mainThumb": "Layer 2",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "Mutazone",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 2"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI"
+        },
+        {
+            "id": "MUTAZONE3",
+            "name": "Mutazone",
+            "mainThumb": "Layer 3",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "Mutazone",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 3"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI"
+        },
+        {
+            "id": "MUTAZONE4",
+            "name": "Mutazone",
+            "mainThumb": "Layer 4",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "Mutazone",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 4"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI"
+        },
+        {
+            "id": "MUTAZONE5",
+            "name": "Mutazone",
+            "mainThumb": "Layer 5",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "Mutazone",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 5"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI"
+        },
+        {
+            "id": "MUTAZONE6",
+            "name": "Mutazone",
+            "mainThumb": "Layer 6",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "Mutazone",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 6"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI"
+        }
+    ]
+}

@@ -3,6 +3,7 @@ import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import MathUtils from 'loggie/utils/MathUtils';
 import * as PIXI from 'pixi.js';
 import DragHandler from './DragHandler';
+import { GameData } from './HyperchipGame';
 import MainTiledMesh from './MainTiledMesh';
 
 export interface TextureData {
@@ -18,7 +19,8 @@ enum MeshGridState {
 export default class MeshGrid extends GameObject {
     private meshGrid: MainTiledMesh[] = [];
     private cellSize: number = 512;
-    private textures: TextureData[] = [];
+    private gameData!: Map<string, GameData>;
+    private textures: GameData[] = [];
     private rows: number = 5;
     private cols: number = 5;
     private targetPosition: PIXI.Point = new PIXI.Point();
@@ -29,29 +31,28 @@ export default class MeshGrid extends GameObject {
 
     public textContainer!: GameViewContainer;
     public text: PIXI.Text = new PIXI.Text();
+    public locked: boolean = false;
 
     constructor() {
         super();
     }
 
-    build() {
+    build(gameData: Map<string, GameData>) {
         super.build();
 
-        this.textures = [
-            { texture: 'Layer 1', id: 1 },
-            { texture: 'Layer 2', id: 2 },
-            { texture: 'Layer 3', id: 3 },
-            { texture: 'Layer 4', id: 4 },
-            { texture: 'Layer 5', id: 5 },
-            { texture: 'Layer 6', id: 6 }
-        ];
+        this.gameData = gameData;
+
+        for (const [key, value] of this.gameData) {
+            //console.log(`Key: ${key}, Value: ${value}`);
+            this.textures.push(value)
+        }
 
         for (let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.cols; col++) {
                 const textureIndex = (col + row * this.cols) % this.textures.length;
-                const textureData = this.textures[textureIndex];
-                const mesh = this.poolGameObject(MainTiledMesh, true, textureData.texture, this.cellSize);
-                mesh.userData = { id: textureData.id };  // Store the id in userData
+                const gameData = this.textures[textureIndex];
+                const mesh = this.poolGameObject(MainTiledMesh, true, gameData.mainThumb, this.cellSize);
+                mesh.userData = { id: gameData.id };  // Store the id in userData
                 this.meshGrid.push(mesh);
 
                 mesh.x = (col - Math.floor(this.cols / 2)) * this.cellSize;
@@ -62,9 +63,8 @@ export default class MeshGrid extends GameObject {
 
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
-
         const normalizedDeltaTime = delta * 60;
-        if (this.state === MeshGridState.IDLE) {
+        if (this.state === MeshGridState.IDLE && !this.locked) {
             const speed = PIXI.isMobile.any ? 20 : 2;
             this.setOffset(this.dragHandler.getVelocity(), speed / normalizedDeltaTime);
         } else if (this.state === MeshGridState.TRANSITIONING) {
@@ -77,8 +77,8 @@ export default class MeshGrid extends GameObject {
         const moveY = offset?.y || 0;
 
         // Calculate the angle and distance based on the offset
-        const angle = Math.atan2(moveY, moveX);
-        const moveDistance = Math.sqrt(moveX * moveX + moveY * moveY) * scale;
+        const angle = Math.atan2(moveY, moveX) || 0;
+        const moveDistance = Math.sqrt(moveX * moveX + moveY * moveY) * scale || 0;
 
         const dist = this.cellSize * 2.5;
         const offsetJump = this.cellSize * 5;
@@ -117,17 +117,18 @@ export default class MeshGrid extends GameObject {
         return this.meshGrid.find(mesh => mesh.userData.id === id) || null;
     }
 
-    moveToId(id: number) {
+    moveToId(id: number): MainTiledMesh | undefined {
         const targetMesh = this.findMeshById(id);
         if (!targetMesh) {
             console.error(`Mesh with id ${id} not found`);
             return;
         }
 
-        targetMesh.showContent()
         this.targetPosition.set(-targetMesh.x, -targetMesh.z);
         this.currentPosition.set(0, 0);
         this.state = MeshGridState.TRANSITIONING;
+
+        return targetMesh;
     }
 
     updateTransition(delta: number) {

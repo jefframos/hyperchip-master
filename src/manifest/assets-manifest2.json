@@ -33,14 +33,9 @@
       "name": "bitmapFonts",
       "assets": [
         {
-          "xmlPath": "./style/bitmap/poppins-emerald.xml",
-          "xmlFileName": "poppins-emerald",
-          "fileName": "./style/bitmap/poppins-emerald.png"
-        },
-        {
-          "xmlPath": "./style/bitmap/poppins-gold.xml",
-          "xmlFileName": "poppins-gold",
-          "fileName": "./style/bitmap/poppins-gold.png"
+          "xmlPath": "./style/bitmap/Poppins-bitmap.xml",
+          "xmlFileName": "Poppins-bitmap",
+          "fileName": "./style/bitmap/Poppins-bitmap.png"
         }
       ]
     }

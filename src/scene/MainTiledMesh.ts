@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 
 import { MeshConfig } from 'loggie/core/mesh/MeshUtils';
 
-import gsap, { Back } from 'gsap';
 import GameObject from 'loggie/core/gameObject/GameObject';
 import Vector3 from 'loggie/core/gameObject/Vector3';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
@@ -16,10 +15,9 @@ export default class MainTiledMesh extends GameObject {
     public tiled: PIXI.Point = new PIXI.Point()
     public nest!: GameObject;
     public worldMesh!: WorldMeshComponent;
-    public textContainer!: GameViewContainer;
+    public centerContainer!: GameViewContainer;
     public userData!: TextureData;
     public text: PIXI.Text = new PIXI.Text();
-    public contentContainer: PIXI.Sprite = new PIXI.Sprite()
     private segments: number = 5
 
     constructor() {
@@ -33,16 +31,11 @@ export default class MainTiledMesh extends GameObject {
 
 
         this.nest = this.poolGameObject(GameObject, true)
-        this.textContainer = this.nest.poolComponent(GameViewContainer, true, RenderLayers.FrontOverlayLayer)
+        this.centerContainer = this.nest.poolComponent(GameViewContainer, true, RenderLayers.FrontOverlayLayer)
 
 
-        // const graph = new PIXI.Graphics().beginFill(0xFF0000).drawRect(-textSize / 2, -textSize / 2, textSize, textSize)
-        // this.textContainer.addChild(graph)
-
-        this.contentContainer.texture = PIXI.Texture.from(textureId)
-        this.contentContainer.anchor.set(0.5)
-        this.textContainer.addChild(this.contentContainer)
-        this.contentContainer.visible = false;
+        // const graph = new PIXI.Graphics().beginFill(0xFF0000).drawRect(-5 / 2, -5 / 2, 5, 5)
+        // this.centerContainer.addChild(graph)
 
 
         const meshConfig: MeshConfig = { width: textSize, height: textSize, segmentsX: this.segments - 1, segmentsY: this.segments - 1, anchor: new Vector3(0.5, 0.5, 0) } as MeshConfig
@@ -78,12 +71,6 @@ export default class MainTiledMesh extends GameObject {
             }
         }
         this.worldMesh.mesh.geometry.getBuffer('aUvs').update(indices);
-    }
-    showContent() {
-        this.contentContainer.visible = true;
-        this.contentContainer.alpha = 0
-        gsap.to(this.contentContainer, { duration: 0.5, alpha: 1, delay: 0.5 })
-        gsap.to(this.contentContainer.scale, { duration: 0.8, x: 1.5, y: 1.5, delay: 0.5, ease: Back.easeOut })
     }
     setTextureOffset(offset: PIXI.Point) {
         this.worldMesh.textureOffset.x = MathUtils.lerp(this.worldMesh.textureOffset.x, offset.x / 1000, 0.2)

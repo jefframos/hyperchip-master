@@ -4,27 +4,15 @@
       "name": "default",
       "assets": [
         {
-          "name": "bitmap/poppins-emerald.png",
+          "name": "bitmap/Poppins-bitmap.png",
           "srcs": [
-            "bitmap/poppins-emerald.png"
+            "bitmap/Poppins-bitmap.png"
           ]
         },
         {
-          "name": "bitmap/poppins-emerald.xml",
+          "name": "bitmap/Poppins-bitmap.xml",
           "srcs": [
-            "bitmap/poppins-emerald.xml"
-          ]
-        },
-        {
-          "name": "bitmap/poppins-gold.png",
-          "srcs": [
-            "bitmap/poppins-gold.png"
-          ]
-        },
-        {
-          "name": "bitmap/poppins-gold.xml",
-          "srcs": [
-            "bitmap/poppins-gold.xml"
+            "bitmap/Poppins-bitmap.xml"
           ]
         },
         {
