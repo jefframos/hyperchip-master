@@ -3,7 +3,7 @@
         {
             "id": "MUTAZONE",
             "name": "Mutazone",
-            "mainThumb": "Layer 1",
+            "mainThumb": "muta1",
             "mainColor": 4218040,
             "secondaryColor": 6096809,
             "title": "Mutazone",
@@ -13,82 +13,88 @@
             ],
             "video": "video.fmv",
             "playLink": "www.play.com",
-            "publisher": "POKI"
+            "publisher": "POKI",
+            "madeWith": "PIXI"
         },
         {
-            "id": "MUTAZONE2",
-            "name": "Mutazone",
-            "mainThumb": "Layer 2",
+            "id": "MONSTER_MERGE",
+            "name": "Monster Merge",
+            "mainThumb": "monster",
             "mainColor": 4218040,
             "secondaryColor": 6096809,
-            "title": "Mutazone",
-            "contentText": "loren ipsum",
-            "contentImage": [
-                "Layer 2"
-            ],
-            "video": "video.fmv",
-            "playLink": "www.play.com",
-            "publisher": "POKI"
-        },
-        {
-            "id": "MUTAZONE3",
-            "name": "Mutazone",
-            "mainThumb": "Layer 3",
-            "mainColor": 4218040,
-            "secondaryColor": 6096809,
-            "title": "Mutazone",
-            "contentText": "loren ipsum",
-            "contentImage": [
-                "Layer 3"
-            ],
-            "video": "video.fmv",
-            "playLink": "www.play.com",
-            "publisher": "POKI"
-        },
-        {
-            "id": "MUTAZONE4",
-            "name": "Mutazone",
-            "mainThumb": "Layer 4",
-            "mainColor": 4218040,
-            "secondaryColor": 6096809,
-            "title": "Mutazone",
+            "title": "Monster Merge",
             "contentText": "loren ipsum",
             "contentImage": [
                 "Layer 4"
             ],
             "video": "video.fmv",
             "playLink": "www.play.com",
-            "publisher": "POKI"
+            "publisher": "POKI",
+            "madeWith": "PIXI"
         },
         {
-            "id": "MUTAZONE5",
-            "name": "Mutazone",
-            "mainThumb": "Layer 5",
+            "id": "SPADERS",
+            "name": "Spaders",
+            "mainThumb": "spaders1",
             "mainColor": 4218040,
             "secondaryColor": 6096809,
-            "title": "Mutazone",
+            "title": "Spaders",
             "contentText": "loren ipsum",
             "contentImage": [
-                "Layer 5"
+                "Layer 3"
             ],
             "video": "video.fmv",
             "playLink": "www.play.com",
-            "publisher": "POKI"
+            "publisher": "POKI",
+            "madeWith": "PIXI"
         },
         {
-            "id": "MUTAZONE6",
-            "name": "Mutazone",
-            "mainThumb": "Layer 6",
+            "id": "EMPIRE",
+            "name": "Galactic Empire",
+            "mainThumb": "galactic",
             "mainColor": 4218040,
             "secondaryColor": 6096809,
-            "title": "Mutazone",
+            "title": "Galactic Empire",
             "contentText": "loren ipsum",
             "contentImage": [
                 "Layer 6"
             ],
             "video": "video.fmv",
             "playLink": "www.play.com",
-            "publisher": "POKI"
+            "publisher": "POKI",
+            "madeWith": "PIXI"
+        },
+        {
+            "id": "WORDS",
+            "name": "6 Words",
+            "mainThumb": "words",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "6 Words",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 5"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI",
+            "madeWith": "PIXI"
+        },
+        {
+            "id": "BTICKS",
+            "name": "Bricks",
+            "mainThumb": "bricksicon",
+            "mainColor": 4218040,
+            "secondaryColor": 6096809,
+            "title": "Bticks",
+            "contentText": "loren ipsum",
+            "contentImage": [
+                "Layer 2"
+            ],
+            "video": "video.fmv",
+            "playLink": "www.play.com",
+            "publisher": "POKI",
+            "madeWith": "PIXI"
         }
     ]
 }

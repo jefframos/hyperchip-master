@@ -1,3 +1,4 @@
+import MathUtils from 'loggie/utils/MathUtils';
 import * as PIXI from 'pixi.js';
 
 export default class DragHandler {
@@ -43,8 +44,8 @@ export default class DragHandler {
             let deltaY = this.currentY - this.prevY;
 
             // Buffer the velocity and ensure it's never infinity
-            this.velocity.x = deltaTime !== 0 ? deltaX / deltaTime : 0; // Velocity in pixels per millisecond
-            this.velocity.y = deltaTime !== 0 ? deltaY / deltaTime : 0; // Velocity in pixels per millisecond
+            this.velocity.x = MathUtils.lerp(this.velocity.x, deltaTime !== 0 ? deltaX / deltaTime : 0, 0.2); // Velocity in pixels per millisecond
+            this.velocity.y = MathUtils.lerp(this.velocity.y, deltaTime !== 0 ? deltaY / deltaTime : 0, 0.2); // Velocity in pixels per millisecond
 
             // Update previous positions and time
             this.prevX = this.currentX;

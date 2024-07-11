@@ -1,19 +1,29 @@
 import gsap, { Back } from 'gsap';
 import GameObject from 'loggie/core/gameObject/GameObject';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
+import ScreenInfo from 'loggie/core/screen/ScreenInfo';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import MathUtils from 'loggie/utils/MathUtils';
 import * as PIXI from 'pixi.js';
 import { Signal } from 'signals';
-import BitmapTextButton from './BitmapTextButton';
-import MainTiledMesh from './MainTiledMesh';
+import BitmapTextButton from '../BitmapTextButton';
+import { GameData } from '../HyperchipGame';
+import MainTiledMesh from '../MainTiledMesh';
+import Footer from './Footer';
+import GameContent from './GameContent';
+import Header from './Header';
 export default class GameInfoPanel extends GameObject {
     public panelContainer!: GameViewContainer;
     public snapMesh!: MainTiledMesh;
+    public cloneMesh!: MainTiledMesh;
     public gameTexture: PIXI.Sprite = new PIXI.Sprite();
     public panelShadow!: PIXI.NineSlicePlane;
     public panel!: PIXI.NineSlicePlane;
     public closeButton!: BitmapTextButton;
+    public currentSection!: GameData;
+    public footer: Footer = new Footer();
+    public header: Header = new Header();
+    public content: GameContent = new GameContent();
     public onHidePanel: Signal = new Signal();
 
     constructor() {
@@ -39,15 +49,23 @@ export default class GameInfoPanel extends GameObject {
         this.panel.height = 720
         this.panel.tint = 0xfd5392;
 
-        this.panel.x = -this.panel.width / 2
-        this.panel.y = -this.panel.height / 2
+
+
+
+        // this.cloneMesh = this.poolGameObject(MainTiledMesh, true, 'Layer 1') as MainTiledMesh
+        // this.cloneMesh.worldMesh.layer = RenderLayers.UILayerOverlay
 
         this.panelContainer.addChild(this.panel)
 
         this.gameTexture.texture = PIXI.Texture.EMPTY
         this.gameTexture.anchor.set(0.5)
-        this.gameTexture.scale.set(5)
         this.panelContainer.addChild(this.gameTexture)
+
+
+        this.panelContainer.addChild(this.footer)
+        this.panelContainer.addChild(this.header)
+        this.panelContainer.addChild(this.content)
+
 
         this.closeButton = this.poolComponent(BitmapTextButton, true)
         this.panelContainer.addChild(this.closeButton.container)
@@ -60,9 +78,11 @@ export default class GameInfoPanel extends GameObject {
             this.onHidePanel.dispatch();
         })
 
+
+
     }
     setPanelColor(color: number) {
-        this.panel.tint = color;
+        this.panel.tint = 0xFFFFFF//color;
     }
     snapToMesh(mesh: MainTiledMesh) {
         this.snapMesh = mesh;
@@ -78,7 +98,11 @@ export default class GameInfoPanel extends GameObject {
             }
         })
     }
-    showSection() {
+    showSection(gameData: GameData) {
+        this.currentSection = gameData;
+        this.header.setTitle(this.currentSection.title)
+        this.content.setTexture(PIXI.Texture.from(gameData.mainThumb))
+        //this.cloneMesh.setTexture(PIXI.Texture.from(gameData.mainThumb))
         gsap.killTweensOf(this.panelContainer.view)
         gsap.killTweensOf(this.panelContainer.view.scale)
         this.panelContainer.view.visible = true;
@@ -92,6 +116,36 @@ export default class GameInfoPanel extends GameObject {
         if (this.snapMesh) {
             this.x = MathUtils.lerp(this.x, this.snapMesh.x, 0.2)
             this.z = MathUtils.lerp(this.z, this.snapMesh.z, 0.2)
+
+            // this.x = this.snapMesh.x
+            // this.cloneMesh.x = this.snapMesh.x + ScreenInfo.gameWidth / 2
+            // this.cloneMesh.z = this.snapMesh.z + ScreenInfo.gameHeight / 2
+            // this.cloneMesh.worldMesh.verticiesBuffer = this.snapMesh.worldMesh.getCurrentVertices().data as number[]
+            // this.z = this.snapMesh.z
+
+            // this.cloneMesh.worldMesh.alpha = MathUtils.lerp(this.cloneMesh.worldMesh.alpha, 1, 0.01)
+        } else {
+            // this.cloneMesh.x = -5000
+            //this.cloneMesh.worldMesh.alpha = 0
         }
+
+
+        this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
+        this.panel.x = -this.panel.width / 2
+        this.panel.y = -this.panel.height / 2
+
+        this.closeButton.container.x = this.panel.width / 2 - 90
+        this.footer.x = this.panel.x
+        this.footer.y = this.panel.height / 2
+        this.footer.resize(this.panel.width, 150)
+
+
+        this.content.x = this.panel.x
+        this.content.y = -this.panel.height / 2 + 100
+        this.content.resize(this.panel.width, this.panel.height - 100)
+
+        this.header.x = this.panel.x
+        this.header.y = -this.panel.height / 2
+        this.header.resize(this.panel.width, 100)
     }
 }

@@ -4,6 +4,7 @@ import PerspectiveCamera, { CameraViewType } from 'loggie/core/camera/Perspectiv
 
 import LoggieApplication from 'loggie/LoggieApplication';
 import LoggieSettings from 'loggie/LoggieSettings';
+import { OrientationType } from 'loggie/core/screen/OrientationType';
 import HyperchipScene from './scene/HyperchipScene';
 
 LoggieApplication.app = new PIXI.Application<HTMLCanvasElement>({
@@ -16,6 +17,7 @@ document.body.appendChild(LoggieApplication.app.view);
 
 const config: LoggieSettings = {
     preloadScenes: [],
+    overlayOrientationType: OrientationType.Both,
     physicsSettings: {
         gravity: {
             x: 0,

@@ -62,7 +62,7 @@ export default class WorldMeshComponent extends GameViewMesh {
     
         // Blend fog color with image color
         vec3 finalColor = mix(textureColor.rgb, fogColor, fogFactor);
-        vec4 finalColorWithAlpha = vec4(finalColor, textureColor.a);
+        vec4 finalColorWithAlpha = vec4(finalColor, alpha);
     
         // Apply the color and alpha to the final color
         finalColorWithAlpha *= color;

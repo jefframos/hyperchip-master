@@ -33,14 +33,7 @@ export default class MainTiledMesh extends GameObject {
         this.nest = this.poolGameObject(GameObject, true)
         this.centerContainer = this.nest.poolComponent(GameViewContainer, true, RenderLayers.FrontOverlayLayer)
 
-
-        // const graph = new PIXI.Graphics().beginFill(0xFF0000).drawRect(-5 / 2, -5 / 2, 5, 5)
-        // this.centerContainer.addChild(graph)
-
-
         const meshConfig: MeshConfig = { width: textSize, height: textSize, segmentsX: this.segments - 1, segmentsY: this.segments - 1, anchor: new Vector3(0.5, 0.5, 0) } as MeshConfig
-
-
         this.worldMesh.build('Layer 1', meshConfig)
 
         const indices: number[] = [];
@@ -51,6 +44,36 @@ export default class MainTiledMesh extends GameObject {
         const texture = PIXI.Texture.from(textureId);
         this.worldMesh.setTextureSize(textSize, textSize)
 
+        const w1 = texture._uvs.x1 - texture._uvs.x0
+        const h1 = texture._uvs.y3 - texture._uvs.y0
+        // Calculate the number of segments
+        const a = this.segments;
+        const b = this.segments;
+        const offsetX = 0;
+        const offsetY = 0;
+        for (let x = 0; x < a; x++) {
+            for (let y = 0; y < b; y++) {
+
+                var index = ((offsetX + x) * (this.segments) + (offsetY + y)) * 2;
+
+                var u = w1 * (y / (a - 1)) + texture._uvs.x0;
+                var v = h1 * (x / (b - 1)) + texture._uvs.y0;
+
+                indices[index] = u;
+                indices[index + 1] = v;
+            }
+        }
+        this.worldMesh.mesh.geometry.getBuffer('aUvs').update(indices);
+    }
+    set alpha(value: number) {
+
+    }
+    setTexture(texture: PIXI.Texture) {
+        const indices: number[] = [];
+
+        for (let index = 0; index < this.worldMesh.mesh.geometry.getBuffer('aUvs').data.length; index++) {
+            indices.push(this.worldMesh.mesh.geometry.getBuffer('aUvs').data[index])
+        }
         const w1 = texture._uvs.x1 - texture._uvs.x0
         const h1 = texture._uvs.y3 - texture._uvs.y0
         // Calculate the number of segments

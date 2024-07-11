@@ -13,7 +13,7 @@ export default class BitmapTextButton extends BaseComponent {
     private mouseOver: boolean = false
     public shapeOffset: PIXI.Point = new PIXI.Point()
     public onClick: Signal = new Signal()
-    build(text: string = 'X', primaryColor: number = 0xff0152, secondaryColor: number = 0x209cff) {
+    build(text: string = 'X', primaryColor: number = 0xE72264, secondaryColor: number = 0x209cff) {
         super.build()
 
         this.container = new PIXI.Container()

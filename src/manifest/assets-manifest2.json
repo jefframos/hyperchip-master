@@ -33,6 +33,16 @@
       "name": "bitmapFonts",
       "assets": [
         {
+          "xmlPath": "./style/bitmap/popings-light.xml",
+          "xmlFileName": "popings-light",
+          "fileName": "./style/bitmap/popings-light.png"
+        },
+        {
+          "xmlPath": "./style/bitmap/poppings-regular.xml",
+          "xmlFileName": "poppings-regular",
+          "fileName": "./style/bitmap/poppings-regular.png"
+        },
+        {
           "xmlPath": "./style/bitmap/Poppins-bitmap.xml",
           "xmlFileName": "Poppins-bitmap",
           "fileName": "./style/bitmap/Poppins-bitmap.png"

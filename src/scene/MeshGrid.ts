@@ -25,7 +25,7 @@ export default class MeshGrid extends GameObject {
     private cols: number = 5;
     private targetPosition: PIXI.Point = new PIXI.Point();
     private currentPosition: PIXI.Point = new PIXI.Point();
-    private transitionSpeed: number = 35; // Adjust this value for desired speed
+    private transitionSpeed: number = 80; // Adjust this value for desired speed
     private state: MeshGridState = MeshGridState.IDLE;
     public dragHandler: DragHandler = new DragHandler();
 

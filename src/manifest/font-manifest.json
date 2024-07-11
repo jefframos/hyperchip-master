@@ -4,6 +4,30 @@
       "name": "default",
       "assets": [
         {
+          "name": "bitmap/popings-light.png",
+          "srcs": [
+            "bitmap/popings-light.png"
+          ]
+        },
+        {
+          "name": "bitmap/popings-light.xml",
+          "srcs": [
+            "bitmap/popings-light.xml"
+          ]
+        },
+        {
+          "name": "bitmap/poppings-regular.png",
+          "srcs": [
+            "bitmap/poppings-regular.png"
+          ]
+        },
+        {
+          "name": "bitmap/poppings-regular.xml",
+          "srcs": [
+            "bitmap/poppings-regular.xml"
+          ]
+        },
+        {
           "name": "bitmap/Poppins-bitmap.png",
           "srcs": [
             "bitmap/Poppins-bitmap.png"

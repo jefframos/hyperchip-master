@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 
+import LoggieApplication from 'loggie/LoggieApplication';
 import Loggie from 'loggie/core/Loggie';
 import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
 import GameObject from 'loggie/core/gameObject/GameObject';
@@ -14,9 +15,9 @@ import ColorUtils from 'loggie/utils/color/ColorUtils';
 import Ease from 'loggie/utils/tween2/Ease';
 import { EaseFunction } from 'loggie/utils/tween2/Tweener';
 import BitmapTextButton from './BitmapTextButton';
-import GameInfoPanel from './GameInfoPanel';
 import MeshGrid from './MeshGrid';
 import StateMachine, { State } from './StateMachine';
+import GameInfoPanel from './infoPanel/GameInfoPanel';
 
 export interface GameData {
     id: string;
@@ -30,6 +31,7 @@ export interface GameData {
     video: string;
     playLink: string;
     publisher: string;
+    madeWith: string;
 }
 interface GameDataList {
     games: GameData[];
@@ -146,14 +148,14 @@ export default class HyperchipGame extends GameObject {
 
                     const gameButton = this.poolComponent(BitmapTextButton, true, element.name.toUpperCase(), 0xFFFFFF) as BitmapTextButton
                     this.gameButtonsContainer.addChild(gameButton.container)
-                    gameButton.container.y = this.buttonsList.size * 100 + 250
+                    gameButton.container.y = this.buttonsList.size * 100
                     gameButton.onClick.add(() => {
                         if (this.stateMachine.currentState == State.Standard) {
                             const targetMesh = this.meshGrid.moveToId(element.id);
                             if (targetMesh) {
                                 this.stateMachine.setState(State.SectionOpen)
                                 this.gameInfoPanel.snapToMesh(targetMesh)
-                                this.gameInfoPanel.showSection()
+                                this.gameInfoPanel.showSection(element)
                             }
                         }
                     })
@@ -161,7 +163,17 @@ export default class HyperchipGame extends GameObject {
                 });
             }
         }
+        setTimeout(() => {
 
+            if (LoggieApplication.debugParams.redirect) {
+                const targetMesh = this.meshGrid.moveToId(gameDataList.games[0].id);
+                if (targetMesh) {
+                    this.stateMachine.setState(State.SectionOpen)
+                    this.gameInfoPanel.snapToMesh(targetMesh)
+                    this.gameInfoPanel.showSection(gameDataList.games[0])
+                }
+            }
+        }, 100);
         this.meshGrid = this.poolGameObject(MeshGrid, true, this.gameDataMap)
 
         this.debug = this.poolGameObject(GameObject, true);
@@ -207,17 +219,20 @@ export default class HyperchipGame extends GameObject {
         };
         this.stateMachine = this.poolComponent(StateMachine, true, State.Standard, 3, statesConfig)
 
+
     }
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
 
         if (this.logo) {
             if (PIXI.isMobile.any) {
-
                 this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.4, this.loggie.overlay.right * 0.4)))
             } else {
-
-                this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.2, this.loggie.overlay.right * 0.2)))
+                if (this.loggie.overlay.isPortrait) {
+                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
+                } else {
+                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.2, this.loggie.overlay.down * 0.2)))
+                }
             }
         }
 
@@ -249,10 +264,15 @@ export default class HyperchipGame extends GameObject {
             this.buttonsTargetPosition = 20
         } else if (this.stateMachine.currentState == State.SectionOpen) {
             this.targetBackgroundAlpha = MathUtils.lerp(this.targetBackgroundAlpha, 0.65, 0.1)
-            this.buttonsTargetPosition = -500
+            this.buttonsTargetPosition = -this.gameButtonsContainer.view.width - 50
 
         }
         this.gameButtonsGo.x = MathUtils.lerp(this.gameButtonsGo.x, this.buttonsTargetPosition, 0.2)
+        this.leftVignette.gameObject.x = MathUtils.lerp(this.leftVignette.gameObject.x, this.buttonsTargetPosition - 20, 0.2)
+
+        this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.9, this.loggie.overlay.right * 0.9)))
+        this.gameButtonsGo.z = this.loggie.overlay.down - this.gameButtonsContainer.view.height - 20
+
         this.gameInfoPanel.setPanelColor(ColorUtils.interpolateGradient(this.gradient2, Math.cos(Loggie.Time * 0.5) * 0.5 + 0.5))
         if (this.whiteIntro) {
             this.whiteIntro.view.width = this.loggie.overlay.right
