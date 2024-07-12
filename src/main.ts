@@ -9,7 +9,7 @@ import HyperchipScene from './scene/HyperchipScene';
 
 LoggieApplication.app = new PIXI.Application<HTMLCanvasElement>({
     resolution: Math.min(window.devicePixelRatio, 1),
-    backgroundColor: 0x181818,
+    backgroundColor: 0x403eb8,
     width: window.outerWidth,
     height: window.outerHeight,
 });

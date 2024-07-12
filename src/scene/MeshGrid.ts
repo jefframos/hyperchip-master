@@ -113,11 +113,11 @@ export default class MeshGrid extends GameObject {
         }
     }
 
-    findMeshById(id: number): MainTiledMesh | null {
+    findMeshById(id: string): MainTiledMesh | null {
         return this.meshGrid.find(mesh => mesh.userData.id === id) || null;
     }
 
-    moveToId(id: number): MainTiledMesh | undefined {
+    moveToId(id: string): MainTiledMesh | undefined {
         const targetMesh = this.findMeshById(id);
         if (!targetMesh) {
             console.error(`Mesh with id ${id} not found`);

@@ -8,25 +8,37 @@ export default class BitmapTextButton extends BaseComponent {
     private maskedContainer!: PIXI.Container;
     private bitmapText!: PIXI.BitmapText;
     private bitmapMaskedText!: PIXI.BitmapText;
+    private hiddenShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private backShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private maskShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private mouseOver: boolean = false
+    private isActive: boolean = false
     public shapeOffset: PIXI.Point = new PIXI.Point()
     public onClick: Signal = new Signal()
-    build(text: string = 'X', primaryColor: number = 0xE72264, secondaryColor: number = 0x209cff) {
+    private primaryColor: number = 0xE72264
+    private secondaryColor: number = 0x209cff
+    private activeColor: number = 0xF45BED
+    build(text: string = 'X', primaryColor: number = 0xE72264, secondaryColor: number = 0x209cff, activeColor: number = 0xF45BED) {
         super.build()
+
+        this.primaryColor = primaryColor;
+        this.secondaryColor = secondaryColor;
+        this.activeColor = activeColor;
 
         this.container = new PIXI.Container()
         this.container.interactive = true;
         this.container.cursor = 'pointer';
 
 
+        this.container.addChild(this.hiddenShape)
         this.container.addChild(this.backShape)
+
+        this.hiddenShape.alpha = 0
 
         this.bitmapText = new PIXI.BitmapText(text, { fontName: 'Poppins-Black', fontSize: 72 });
         this.container.addChild(this.bitmapText)
-        this.bitmapText.tint = primaryColor
-        this.backShape.height = this.bitmapText.height + 10
+        this.bitmapText.tint = this.primaryColor
+        this.backShape.height = 80
 
         this.mouseOver = false
 
@@ -52,17 +64,32 @@ export default class BitmapTextButton extends BaseComponent {
         })
         this.shapeOffset.x = -15
         this.shapeOffset.y = 15
-    }
 
+        this.backShape.width = 0
+    }
+    setDefaultPanelColor(color: number) {
+        this.hiddenShape.tint = color
+        this.hiddenShape.alpha = 1
+    }
+    setTransitionPanelColor(color: number) {
+        this.backShape.tint = color
+    }
+    setActive(value: boolean) {
+        this.isActive = value;
+    }
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
 
-        if (this.mouseOver) {
+        this.hiddenShape.width = this.bitmapText.width + 20
+        this.hiddenShape.height = this.backShape.height
+
+        if (this.mouseOver || this.isActive) {
             this.backShape.width = MathUtils.lerp(this.backShape.width, this.bitmapText.width + 20, 0.1)
         } else {
             this.backShape.width = Math.floor(MathUtils.lerp(this.backShape.width, 0, 0.1))
-
         }
+
+        this.bitmapMaskedText.tint = this.isActive ? this.activeColor : this.secondaryColor
 
         this.bitmapMaskedText.x = this.bitmapText.x
         this.bitmapMaskedText.y = this.bitmapText.y
@@ -73,6 +100,9 @@ export default class BitmapTextButton extends BaseComponent {
 
         this.maskShape.x = this.backShape.x
         this.maskShape.y = this.backShape.y
+
+        this.hiddenShape.x = this.backShape.x
+        this.hiddenShape.y = this.backShape.y
 
         this.maskShape.width = this.backShape.width
         this.maskShape.height = this.backShape.height

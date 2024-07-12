@@ -1,27 +1,40 @@
+import ViewUtils from 'loggie/utils/ViewUtils';
 import * as PIXI from 'pixi.js';
+import BitmapTextButton from '../BitmapTextButton';
 export default class Header extends PIXI.Container {
     private title: PIXI.BitmapText;
     private backShape: PIXI.Sprite;
+    public closeButton!: BitmapTextButton;
 
-    constructor() {
+    constructor(closeButton: BitmapTextButton) {
         super()
 
         this.backShape = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.addChild(this.backShape)
-        this.backShape.tint = 0x181a21
+        this.backShape.tint = 0xffffff
 
-        this.title = new PIXI.BitmapText('GAME TITLE', { fontName: 'Poppins-Black', fontSize: 72 });
+        this.title = new PIXI.BitmapText('GAME TITLE', { fontName: 'Poppins-Black', fontSize: 64 });
         this.addChild(this.title)
+        this.title.tint = 0x66A7FF
+
+        this.closeButton = closeButton;
+        this.addChild(this.closeButton.container)
+
     }
-    setTitle(title: string) {
+    setTitle(title: string, color: number = 0x66A7FF) {
         this.title.text = title;
+        this.title.tint = color
     }
     resize(width: number, height: number) {
         this.backShape.width = width
         this.backShape.height = height
 
-        this.title.x = 40
-        this.title.y = this.backShape.height / 2 - this.title.height / 2 - 10
+        this.closeButton.container.x = width - 80
+
+        this.title.scale.set(Math.min(1, ViewUtils.elementScaler(this.title, width - 150)))
+
+        this.title.x = 30
+        this.title.y = 8
 
 
     }

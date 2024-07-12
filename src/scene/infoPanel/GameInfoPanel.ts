@@ -22,7 +22,7 @@ export default class GameInfoPanel extends GameObject {
     public closeButton!: BitmapTextButton;
     public currentSection!: GameData;
     public footer: Footer = new Footer();
-    public header: Header = new Header();
+    public header!: Header;
     public content: GameContent = new GameContent();
     public onHidePanel: Signal = new Signal();
 
@@ -63,20 +63,21 @@ export default class GameInfoPanel extends GameObject {
 
 
         this.panelContainer.addChild(this.footer)
-        this.panelContainer.addChild(this.header)
         this.panelContainer.addChild(this.content)
 
 
-        this.closeButton = this.poolComponent(BitmapTextButton, true)
+        this.closeButton = this.poolComponent(BitmapTextButton, true, 'X', 0xFFFFFF, 0xE72264)
+        this.closeButton.setDefaultPanelColor(0xE72264)
+        this.closeButton.shapeOffset.y = 8
         this.panelContainer.addChild(this.closeButton.container)
         this.panelContainer.view.visible = false;
-
-        this.closeButton.container.x = -this.panel.width / 2 + 20
-        this.closeButton.container.y = -this.panel.height / 2
 
         this.closeButton.onClick.add(() => {
             this.onHidePanel.dispatch();
         })
+
+        this.header = new Header(this.closeButton);
+        this.panelContainer.addChild(this.header)
 
 
 
@@ -100,7 +101,7 @@ export default class GameInfoPanel extends GameObject {
     }
     showSection(gameData: GameData) {
         this.currentSection = gameData;
-        this.header.setTitle(this.currentSection.title)
+        this.header.setTitle(this.currentSection.title, this.currentSection.mainColor)
         this.content.setTexture(PIXI.Texture.from(gameData.mainThumb))
         //this.cloneMesh.setTexture(PIXI.Texture.from(gameData.mainThumb))
         gsap.killTweensOf(this.panelContainer.view)
@@ -130,11 +131,27 @@ export default class GameInfoPanel extends GameObject {
         }
 
 
-        this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
-        this.panel.x = -this.panel.width / 2
-        this.panel.y = -this.panel.height / 2
+        if (this.loggie.overlay.isPortrait) {
 
-        this.closeButton.container.x = this.panel.width / 2 - 90
+            this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
+            this.panel.x = -this.panel.width / 2
+            this.panel.y = -this.panel.height / 2
+        } else {
+            this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.6)
+            this.panel.x = -this.panel.width / 2 + this.panel.width * 0.2//+ ScreenInfo.gameWidth / 2//(ScreenInfo.gameWidth - this.panel.width)
+            this.panel.y = -this.panel.height / 2
+
+        }
+
+
+        this.panel.height = Math.min(720, ScreenInfo.gameHeight * 0.6)
+
+        this.panelShadow.width = this.panel.width * 1.1
+        this.panelShadow.height = this.panel.height * 1.1
+
+        this.panelShadow.x = this.panel.x - this.panelShadow.width * 0.05
+        this.panelShadow.y = -this.panelShadow.height / 2
+
         this.footer.x = this.panel.x
         this.footer.y = this.panel.height / 2
         this.footer.resize(this.panel.width, 150)
@@ -144,8 +161,12 @@ export default class GameInfoPanel extends GameObject {
         this.content.y = -this.panel.height / 2 + 100
         this.content.resize(this.panel.width, this.panel.height - 100)
 
-        this.header.x = this.panel.x
-        this.header.y = -this.panel.height / 2
-        this.header.resize(this.panel.width, 100)
+
+        if (this.header) {
+
+            this.header.x = this.panel.x
+            this.header.y = -this.panel.height / 2
+            this.header.resize(this.panel.width, 100)
+        }
     }
 }

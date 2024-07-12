@@ -2,10 +2,15 @@
 
 import gsap from 'gsap';
 import Loggie from 'loggie/core/Loggie';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import PopupManager from 'loggie/core/ui/popup/PopupManager';
+import GameViewSprite from 'loggie/core/view/GameViewSprite';
+import GameViewUtils from 'loggie/core/view/GameViewUtils';
 import BaseScene from 'loggie/scene/BaseScene';
 import BaseTemplates from 'loggie/templates/BaseTemplates';
+import MathUtils from 'loggie/utils/MathUtils';
 import ObjectCloner from 'loggie/utils/ObjectCloner';
+import * as PIXI from 'pixi.js';
 import fontManifest from '../manifest/font-manifest.json';
 import imageManifest from '../manifest/image-manifest.json';
 import jsonManifest from '../manifest/json-manifest.json';
@@ -14,6 +19,7 @@ import TestPopup from './popup/TestPopup';
 import TestPopup2 from './popup/TestPopup2';
 export default class HyperchipScene extends BaseScene {
 
+    private shapeBlocker!: GameViewSprite;
     constructor() {
         super()
 
@@ -26,6 +32,9 @@ export default class HyperchipScene extends BaseScene {
         ], ["template", "master"])
     }
     loadComplete(): void {
+        this.shapeBlocker = GameViewUtils.makeSprite(this, PIXI.Texture.WHITE, RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
+        this.shapeBlocker.customZIndex = 1000000
+        this.shapeBlocker.view.tint = 0x403eb8;
 
 
 
@@ -51,6 +60,7 @@ export default class HyperchipScene extends BaseScene {
         testPopup2.build('test2', ObjectCloner.clone(BaseTemplates.PopupTemplate))
         testPopupManager.registerPopUp(testPopup2)
 
+
         //testPopupManager.showPopUp('test')
 
         // setTimeout(() => {
@@ -75,5 +85,13 @@ export default class HyperchipScene extends BaseScene {
     }
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
+
+
+        if (this.loggie.mainCamera && this.shapeBlocker) {
+
+            this.shapeBlocker.view.width = this.loggie.mainCamera.cameraViewBounds.width
+            this.shapeBlocker.view.height = this.loggie.mainCamera.cameraViewBounds.height
+            this.shapeBlocker.view.alpha = MathUtils.lerp(this.shapeBlocker.view.alpha, 0, 0.1)
+        }
     }
 }
