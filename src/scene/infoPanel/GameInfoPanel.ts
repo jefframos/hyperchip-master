@@ -1,17 +1,20 @@
-import gsap, { Back } from 'gsap';
-import GameObject from 'loggie/core/gameObject/GameObject';
-import { RenderLayers } from 'loggie/core/render/RenderLayers';
-import ScreenInfo from 'loggie/core/screen/ScreenInfo';
-import GameViewContainer from 'loggie/core/view/GameViewContainer';
-import MathUtils from 'loggie/utils/MathUtils';
 import * as PIXI from 'pixi.js';
-import { Signal } from 'signals';
+
+import gsap, { Back } from 'gsap';
+
 import BitmapTextButton from '../BitmapTextButton';
-import { GameData } from '../HyperchipGame';
-import MainTiledMesh from '../MainTiledMesh';
 import Footer from './Footer';
 import GameContent from './GameContent';
+import { GameData } from '../HyperchipGame';
+import GameObject from 'loggie/core/gameObject/GameObject';
+import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import Header from './Header';
+import MainTiledMesh from '../MainTiledMesh';
+import MathUtils from 'loggie/utils/MathUtils';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
+import ScreenInfo from 'loggie/core/screen/ScreenInfo';
+import { Signal } from 'signals';
+
 export default class GameInfoPanel extends GameObject {
     public panelContainer!: GameViewContainer;
     public snapMesh!: MainTiledMesh;
@@ -134,17 +137,20 @@ export default class GameInfoPanel extends GameObject {
         if (this.loggie.overlay.isPortrait) {
 
             this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
+            this.panel.height = Math.max(720, ScreenInfo.gameHeight * 0.7)
+
             this.panel.x = -this.panel.width / 2
             this.panel.y = -this.panel.height / 2
         } else {
             this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.6)
+            this.panel.height = Math.max(0, this.loggie.overlay.down * 0.6)
+
             this.panel.x = -this.panel.width / 2 + this.panel.width * 0.2//+ ScreenInfo.gameWidth / 2//(ScreenInfo.gameWidth - this.panel.width)
-            this.panel.y = -this.panel.height / 2
+            this.panel.y = -this.panel.height / 2 - this.panel.height * 0.2
 
         }
 
 
-        this.panel.height = Math.min(720, ScreenInfo.gameHeight * 0.6)
 
         this.panelShadow.width = this.panel.width * 1.1
         this.panelShadow.height = this.panel.height * 1.1
@@ -165,7 +171,7 @@ export default class GameInfoPanel extends GameObject {
         if (this.header) {
 
             this.header.x = this.panel.x
-            this.header.y = -this.panel.height / 2
+            this.header.y =this.panel.y
             this.header.resize(this.panel.width, 100)
         }
     }
