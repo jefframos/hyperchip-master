@@ -2,25 +2,25 @@ import * as PIXI from 'pixi.js';
 
 import StateMachine, { State } from './StateMachine';
 
-import BitmapTextButton from './BitmapTextButton';
-import { ColorStop } from 'loggie/utils/color/ColorStop';
-import ColorUtils from 'loggie/utils/color/ColorUtils';
-import Ease from 'loggie/utils/tween2/Ease';
-import { EaseFunction } from 'loggie/utils/tween2/Tweener';
-import GameInfoPanel from './infoPanel/GameInfoPanel';
+import LoggieApplication from 'loggie/LoggieApplication';
+import Loggie from 'loggie/core/Loggie';
+import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
 import GameObject from 'loggie/core/gameObject/GameObject';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import GameViewSprite from 'loggie/core/view/GameViewSprite';
 import GameViewUtils from 'loggie/core/view/GameViewUtils';
 import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
-import Loggie from 'loggie/core/Loggie';
-import LoggieApplication from 'loggie/LoggieApplication';
 import MathUtils from 'loggie/utils/MathUtils';
-import MeshGrid from './MeshGrid';
-import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
-import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
-import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import ViewUtils from 'loggie/utils/ViewUtils';
+import { ColorStop } from 'loggie/utils/color/ColorStop';
+import ColorUtils from 'loggie/utils/color/ColorUtils';
+import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
+import Ease from 'loggie/utils/tween2/Ease';
+import { EaseFunction } from 'loggie/utils/tween2/Tweener';
+import BitmapTextButton from './BitmapTextButton';
+import MeshGrid from './MeshGrid';
+import GameInfoPanel from './infoPanel/GameInfoPanel';
 
 export interface GameData {
     id: string;
@@ -159,7 +159,7 @@ export default class HyperchipGame extends GameObject {
 
         const containerGo = GameViewUtils.makeContainer(this, RenderLayers.UILayerOverlay)
         this.mainMenuContainer = containerGo.findComponent<GameViewContainer>(GameViewContainer)
-        this.aboutButton = this.poolComponent(BitmapTextButton, true, 'ABOUT', 0xFFFFFF, 0xF45BED, 0x209cff) as BitmapTextButton
+        this.aboutButton = this.poolComponent(BitmapTextButton, true, '     ABOUT', 0xFFFFFF, 0xF45BED, 0x209cff) as BitmapTextButton
         this.aboutButton.setDefaultPanelColor(0x209cff)
         this.aboutButton.container.scale.set(1.1)
 
@@ -170,7 +170,7 @@ export default class HyperchipGame extends GameObject {
             // }
         })
 
-        this.gamesButton = this.poolComponent(BitmapTextButton, true, 'GAMES', 0xFFFFFF) as BitmapTextButton
+        this.gamesButton = this.poolComponent(BitmapTextButton, true, '     GAMES', 0xFFFFFF) as BitmapTextButton
         this.gamesButton.setDefaultPanelColor(0xF45BED)
         this.gamesButton.container.scale.set(1.1)
 
@@ -279,16 +279,16 @@ export default class HyperchipGame extends GameObject {
         if (this.logo) {
             if (PIXI.isMobile.any) {
                 if (this.loggie.overlay.isPortrait) {
-                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.3, this.loggie.overlay.right * 0.3)))
+                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.3, this.loggie.overlay.right * 0.3)))
                 } else {
-                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.3, this.loggie.overlay.down * 0.3)))
+                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.3, this.loggie.overlay.down * 0.3)))
 
                 }
             } else {
                 if (this.loggie.overlay.isPortrait) {
-                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
+                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
                 } else {
-                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
+                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
                 }
             }
         }
@@ -355,21 +355,21 @@ export default class HyperchipGame extends GameObject {
             if (PIXI.isMobile.any) {
 
                 this.logo.gameObject.x = this.loggie.overlay.right - this.logo.view.width - 20
-                this.logo.gameObject.z = 20
-                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 120
+                this.logo.gameObject.z = 30
+                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 60
             }
             this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.9, this.loggie.overlay.down * 0.5)))
         } else {
             if (PIXI.isMobile.any) {
                 this.logo.gameObject.x = this.loggie.overlay.right - this.logo.view.width - 20
-                this.logo.gameObject.z = 20
-                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 120
+                this.logo.gameObject.z = 30
+                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 60
             }
             this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.3, this.loggie.overlay.down * 0.55)))
         }
 
 
-        this.gameButtonsGo.z = this.mainMenuContainer.gameObject.z + 200
+        this.gameButtonsGo.z = this.mainMenuContainer.gameObject.z + 210
 
         this.gameInfoPanel.setPanelColor(ColorUtils.interpolateGradient(this.gradient2, Math.cos(Loggie.Time * 0.5) * 0.5 + 0.5))
         if (this.flatBackground) {
