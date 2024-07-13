@@ -2,25 +2,25 @@ import * as PIXI from 'pixi.js';
 
 import StateMachine, { State } from './StateMachine';
 
-import LoggieApplication from 'loggie/LoggieApplication';
-import Loggie from 'loggie/core/Loggie';
-import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
+import BitmapTextButton from './BitmapTextButton';
+import { ColorStop } from 'loggie/utils/color/ColorStop';
+import ColorUtils from 'loggie/utils/color/ColorUtils';
+import Ease from 'loggie/utils/tween2/Ease';
+import { EaseFunction } from 'loggie/utils/tween2/Tweener';
+import GameInfoPanel from './infoPanel/GameInfoPanel';
 import GameObject from 'loggie/core/gameObject/GameObject';
-import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import GameViewSprite from 'loggie/core/view/GameViewSprite';
 import GameViewUtils from 'loggie/core/view/GameViewUtils';
 import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
+import Loggie from 'loggie/core/Loggie';
+import LoggieApplication from 'loggie/LoggieApplication';
 import MathUtils from 'loggie/utils/MathUtils';
-import ViewUtils from 'loggie/utils/ViewUtils';
-import { ColorStop } from 'loggie/utils/color/ColorStop';
-import ColorUtils from 'loggie/utils/color/ColorUtils';
-import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
-import Ease from 'loggie/utils/tween2/Ease';
-import { EaseFunction } from 'loggie/utils/tween2/Tweener';
-import BitmapTextButton from './BitmapTextButton';
 import MeshGrid from './MeshGrid';
-import GameInfoPanel from './infoPanel/GameInfoPanel';
+import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
+import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
+import ViewUtils from 'loggie/utils/ViewUtils';
 
 export interface GameData {
     id: string;
@@ -144,7 +144,7 @@ export default class HyperchipGame extends GameObject {
         this.leftVignette = GameViewUtils.makeSprite(this, PIXI.Texture.from('left-vignette'), RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
         this.leftVignette.customZIndex = -100
 
-        this.logo = GameViewUtils.makeSprite(this, PIXI.Texture.from('logo'), RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
+        this.logo = GameViewUtils.makeSprite(this, PIXI.Texture.from('logo3'), RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
         this.logo.customZIndex = 100
 
         InteractiveEventUtils.addClickTap(this.logo.view, () => {
@@ -278,18 +278,26 @@ export default class HyperchipGame extends GameObject {
 
         if (this.logo) {
             if (PIXI.isMobile.any) {
+                
                 if (this.loggie.overlay.isPortrait) {
-                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.3, this.loggie.overlay.right * 0.3)))
+                    this.logo.view.texture = PIXI.Texture.from('logo3')
+                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.4, this.loggie.overlay.right * 0.4)))
                 } else {
+                    this.logo.view.texture = PIXI.Texture.from('logo')
+                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, 400)))
+
                     //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.3, this.loggie.overlay.down * 0.3)))
 
                 }
             } else {
+                this.logo.view.texture = PIXI.Texture.from('logo')
                 if (this.loggie.overlay.isPortrait) {
+                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.4, this.loggie.overlay.right * 0.4)))
+
                     //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
                 } else {
-                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
                 }
+                this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, 400)))
             }
         }
 
