@@ -11,7 +11,7 @@ export default class Header extends PIXI.Container {
 
         this.backShape = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.addChild(this.backShape)
-        this.backShape.tint = 0xffffff
+        this.backShape.alpha = 0xffffff
 
         this.title = new PIXI.BitmapText('GAME TITLE', { fontName: 'Poppins-Black', fontSize: 64 });
         this.addChild(this.title)
@@ -25,6 +25,10 @@ export default class Header extends PIXI.Container {
         this.title.text = title;
         this.title.tint = color
     }
+    updateShapeColor(value: number = 0xFFFFFF, alpha: number = 1) {
+        this.backShape.tint = value;
+        this.backShape.alpha = alpha;
+    }
     resize(width: number, height: number) {
         this.backShape.width = width
         this.backShape.height = height
@@ -35,6 +39,7 @@ export default class Header extends PIXI.Container {
 
         this.title.x = 30
         this.title.y = 8
+
 
 
     }

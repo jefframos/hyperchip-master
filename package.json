@@ -21,6 +21,7 @@
 		"audio": "cd rivie && npm run audio",
 		"json": "cd rivie && npm run json",
 		"shader": "cd rivie && npm run shader",
+		"video": "cd rivie && npm run video",
 		"translate": "cd rivie && npm run translate",
 		"lang": "cd rivie && npm run lang",
 		"write-lang": "cd rivie && npm run write-lang",

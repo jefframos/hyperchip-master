@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 
 import gsap, { Back } from 'gsap';
 
+import LoggieApplication from 'loggie/LoggieApplication';
 import GameObject from 'loggie/core/gameObject/GameObject';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import ScreenInfo from 'loggie/core/screen/ScreenInfo';
@@ -106,6 +107,7 @@ export default class GameInfoPanel extends GameObject {
         this.currentSection = gameData;
         this.header.setTitle(this.currentSection.title, this.currentSection.mainColor)
         this.content.setTexture(PIXI.Texture.from(gameData.mainThumb))
+        this.content.setContentText(this.currentSection.contentText)
         //this.cloneMesh.setTexture(PIXI.Texture.from(gameData.mainThumb))
         gsap.killTweensOf(this.panelContainer.view)
         gsap.killTweensOf(this.panelContainer.view.scale)
@@ -134,18 +136,30 @@ export default class GameInfoPanel extends GameObject {
         }
 
 
+        if (!this.currentSection) {
+            return;
+        }
         if (this.loggie.overlay.isPortrait) {
 
+            this.content.setTitle(this.currentSection.title, this.currentSection.mainColor)
+            this.header.setTitle('', this.currentSection.mainColor)
             this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
-            this.panel.height = Math.max(720, ScreenInfo.gameHeight * 0.7)
+            this.panel.height = Math.max(720, ScreenInfo.gameHeight * 0.6)
 
             this.panel.x = -this.panel.width / 2
             this.panel.y = -this.panel.height / 2
+
         } else {
+            // this.content.setTitle('', this.currentSection.mainColor)
+            // this.header.setTitle(this.currentSection.title, this.currentSection.mainColor)
+
+            this.content.setTitle(this.currentSection.title, this.currentSection.mainColor)
+            this.header.setTitle('', this.currentSection.mainColor)
+
             this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.6)
             this.panel.x = -this.panel.width / 2 + this.panel.width * 0.2//+ ScreenInfo.gameWidth / 2//(ScreenInfo.gameWidth - this.panel.width)
 
-            if (PIXI.isMobile.any) {
+            if (PIXI.isMobile.any || LoggieApplication.debugParams.forceMobile) {
                 this.panel.height = Math.max(0, this.loggie.overlay.down * 0.5)
                 this.panel.y = -this.panel.height / 2 - this.panel.height * 0.2
             } else {
@@ -170,15 +184,23 @@ export default class GameInfoPanel extends GameObject {
 
 
         this.content.x = this.panel.x
-        this.content.y = -this.panel.height / 2 + 100
-        this.content.resize(this.panel.width, this.panel.height - 100)
+        this.content.y = -this.panel.height / 2 - 150
+        this.content.resize(this.panel.width, this.panel.height + 150)
 
 
         if (this.header) {
 
             this.header.x = this.panel.x
-            this.header.y = this.panel.y
+            this.header.y = this.panel.y - 150
             this.header.resize(this.panel.width, 100)
+            if (this.loggie.overlay.isPortrait) {
+                this.header.updateShapeColor(0x181a21)
+                this.closeButton.container.y = 0
+            } else {
+                this.header.updateShapeColor(0xFFFFFF, 0)
+                this.closeButton.container.x += 50
+                this.closeButton.container.y = 120
+            }
         }
     }
 }

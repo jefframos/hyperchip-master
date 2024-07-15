@@ -8,6 +8,7 @@ export default class BitmapTextButton extends BaseComponent {
     private maskedContainer!: PIXI.Container;
     private bitmapText!: PIXI.BitmapText;
     private bitmapMaskedText!: PIXI.BitmapText;
+    private shadow: PIXI.NineSlicePlane = new PIXI.NineSlicePlane(PIXI.Texture.from('small-shadow'), 64, 64, 64, 64)
     private hiddenShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private backShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private maskShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
@@ -29,7 +30,8 @@ export default class BitmapTextButton extends BaseComponent {
         this.container.interactive = true;
         this.container.cursor = 'pointer';
 
-
+        this.shadow.alpha = .25
+        this.shadow.tint = 0
         this.container.addChild(this.hiddenShape)
         this.container.addChild(this.backShape)
 
@@ -67,6 +69,9 @@ export default class BitmapTextButton extends BaseComponent {
 
         this.backShape.width = 0
     }
+    addShadow() {
+        this.container.addChild(this.shadow)
+    }
     setDefaultPanelColor(color: number) {
         this.hiddenShape.tint = color
         this.hiddenShape.alpha = 1
@@ -83,6 +88,9 @@ export default class BitmapTextButton extends BaseComponent {
         this.hiddenShape.width = this.bitmapText.width + 20
         this.hiddenShape.height = this.backShape.height
 
+        this.shadow.width = this.hiddenShape.width + 10
+        this.shadow.height = this.hiddenShape.height + 10
+
         if (this.mouseOver || this.isActive) {
             this.backShape.width = MathUtils.lerp(this.backShape.width, this.bitmapText.width + 20, 0.1)
         } else {
@@ -97,6 +105,9 @@ export default class BitmapTextButton extends BaseComponent {
 
         this.backShape.x = this.shapeOffset.x
         this.backShape.y = this.shapeOffset.y
+
+        this.shadow.x = this.backShape.x
+        this.shadow.y = this.backShape.y
 
         this.maskShape.x = this.backShape.x
         this.maskShape.y = this.backShape.y

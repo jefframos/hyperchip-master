@@ -277,7 +277,8 @@ export default class HyperchipGame extends GameObject {
 
 
         if (this.logo) {
-            if (PIXI.isMobile.any) {
+            if (PIXI.isMobile.any || LoggieApplication.debugParams.forceMobile) {
+                this.logo.view.scale.set(0.9)
                 if (this.loggie.overlay.isPortrait) {
                     //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.3, this.loggie.overlay.right * 0.3)))
                 } else {
@@ -352,7 +353,7 @@ export default class HyperchipGame extends GameObject {
         this.logo.gameObject.z = 20
 
         if (this.loggie.overlay.isPortrait) {
-            if (PIXI.isMobile.any) {
+            if (PIXI.isMobile.any || LoggieApplication.debugParams.forceMobile) {
 
                 this.logo.gameObject.x = this.loggie.overlay.right - this.logo.view.width - 20
                 this.logo.gameObject.z = 30
@@ -360,7 +361,7 @@ export default class HyperchipGame extends GameObject {
             }
             this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.9, this.loggie.overlay.down * 0.5)))
         } else {
-            if (PIXI.isMobile.any) {
+            if (PIXI.isMobile.any || LoggieApplication.debugParams.forceMobile) {
                 this.logo.gameObject.x = this.loggie.overlay.right - this.logo.view.width - 20
                 this.logo.gameObject.z = 30
                 this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 60
