@@ -121,7 +121,7 @@ export default class GameInfoPanel extends GameObject {
         gsap.killTweensOf(this.panelContainer.view.scale)
         this.panelContainer.view.visible = true;
         this.panelContainer.view.alpha = 0
-        gsap.to(this.panelContainer.view, { duration: 0.5, alpha: 1, delay: 0.5 })
+        gsap.to(this.panelContainer.view, { duration: 0.25, alpha: 1, delay: 0.85 })
         gsap.to(this.panelContainer.view.scale, { duration: 0.8, x: 1.5, y: 1.5, delay: 0.5, ease: Back.easeOut })
     }
     update(delta: number, unscaledTime: number) {

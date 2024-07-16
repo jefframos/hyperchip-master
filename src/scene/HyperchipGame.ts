@@ -362,21 +362,22 @@ export default class HyperchipGame extends GameObject {
             if (PIXI.isMobile.any) {
 
                 if (this.stateMachine.currentState == State.SectionOpen) {
-                    this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, this.loggie.overlay.halfWidth + this.logo.view.width / 2 * this.logo.view.scale.x, 0.1)
+                    this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, this.loggie.overlay.right / 2 - this.logo.view.width / 2, 0.1)
+                    this.logo.gameObject.z = 30
                 } else {
                     this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, this.loggie.overlay.right - this.logo.view.width - 20, 0.1)
+                    this.logo.gameObject.z = 60
                 }
-
-                this.logo.gameObject.z = 30
-                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 60
+                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 120
+            } else {
+                this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, 20, 0.1)
             }
-            this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, 20, 0.1)
             this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.9, this.loggie.overlay.down * 0.5)))
         } else {
             if (PIXI.isMobile.any) {
                 this.logo.gameObject.x = this.loggie.overlay.right - this.logo.view.width - 20
-                this.logo.gameObject.z = 30
-                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 60
+                this.logo.gameObject.z = 20
+                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 40
             }
             //this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, 20, 0.1)
 
