@@ -7,6 +7,7 @@ export default class BitmapTextButton extends BaseComponent {
     public container!: PIXI.Container;
     private maskedContainer!: PIXI.Container;
     private bitmapText!: PIXI.BitmapText;
+    private bitmapText2!: PIXI.BitmapText;
     private bitmapMaskedText!: PIXI.BitmapText;
     private shadow: PIXI.NineSlicePlane = new PIXI.NineSlicePlane(PIXI.Texture.from('small-shadow'), 64, 64, 64, 64)
     private hiddenShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
@@ -30,16 +31,23 @@ export default class BitmapTextButton extends BaseComponent {
         this.container.interactive = true;
         this.container.cursor = 'pointer';
 
-        this.shadow.alpha = .25
+        this.shadow.alpha = .35
         this.shadow.tint = 0
         this.container.addChild(this.hiddenShape)
         this.container.addChild(this.backShape)
 
         this.hiddenShape.alpha = 0
 
+        this.bitmapText2 = new PIXI.BitmapText(text, { fontName: 'Poppins-Black', fontSize: 72 });
+        this.container.addChild(this.bitmapText2)
+        this.bitmapText2.tint = 0
+        this.bitmapText2.alpha = 0.2
+
         this.bitmapText = new PIXI.BitmapText(text, { fontName: 'Poppins-Black', fontSize: 72 });
         this.container.addChild(this.bitmapText)
         this.bitmapText.tint = this.primaryColor
+
+
         this.backShape.height = 80
 
         this.mouseOver = false
@@ -70,7 +78,7 @@ export default class BitmapTextButton extends BaseComponent {
         this.backShape.width = 0
     }
     addShadow() {
-        this.container.addChild(this.shadow)
+        this.container.addChildAt(this.shadow, 0)
     }
     setDefaultPanelColor(color: number) {
         this.hiddenShape.tint = color
@@ -85,11 +93,15 @@ export default class BitmapTextButton extends BaseComponent {
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
 
+
         this.hiddenShape.width = this.bitmapText.width + 20
         this.hiddenShape.height = this.backShape.height
 
-        this.shadow.width = this.hiddenShape.width + 10
-        this.shadow.height = this.hiddenShape.height + 10
+        this.bitmapText2.x = this.bitmapText.x + 5
+        this.bitmapText2.y = this.bitmapText.y + 5
+
+        this.shadow.width = this.hiddenShape.width + 20
+        this.shadow.height = this.hiddenShape.height + 20
 
         if (this.mouseOver || this.isActive) {
             this.backShape.width = MathUtils.lerp(this.backShape.width, this.bitmapText.width + 20, 0.1)

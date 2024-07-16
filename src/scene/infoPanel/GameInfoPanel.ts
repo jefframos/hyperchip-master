@@ -105,9 +105,17 @@ export default class GameInfoPanel extends GameObject {
     }
     showSection(gameData: GameData) {
         this.currentSection = gameData;
+
+        this.footer.setData(gameData)
         this.header.setTitle(this.currentSection.title, this.currentSection.mainColor)
-        this.content.setTexture(PIXI.Texture.from(gameData.mainThumb))
+        const tex: PIXI.Texture[] = [];
+        gameData.contentImage.forEach(element => {
+            tex.push(PIXI.Texture.from(element))
+        });
+        //this.content.setTexture([PIXI.Texture.from(gameData.mainThumb)])
+        this.content.setTexture(tex)
         this.content.setContentText(this.currentSection.contentText)
+
         //this.cloneMesh.setTexture(PIXI.Texture.from(gameData.mainThumb))
         gsap.killTweensOf(this.panelContainer.view)
         gsap.killTweensOf(this.panelContainer.view.scale)
@@ -119,6 +127,7 @@ export default class GameInfoPanel extends GameObject {
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
 
+        this.content.update(delta)
         if (this.snapMesh) {
             this.x = MathUtils.lerp(this.x, this.snapMesh.x, 0.2)
             this.z = MathUtils.lerp(this.z, this.snapMesh.z, 0.2)
@@ -144,7 +153,7 @@ export default class GameInfoPanel extends GameObject {
             this.content.setTitle(this.currentSection.title, this.currentSection.mainColor)
             this.header.setTitle('', this.currentSection.mainColor)
             this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
-            this.panel.height = Math.max(720, ScreenInfo.gameHeight * 0.6)
+            this.panel.height = Math.max(680, ScreenInfo.gameHeight * 0.4)
 
             this.panel.x = -this.panel.width / 2
             this.panel.y = -this.panel.height / 2
@@ -178,15 +187,15 @@ export default class GameInfoPanel extends GameObject {
         this.panelShadow.x = this.panel.x - this.panelShadow.width * 0.05
         this.panelShadow.y = -this.panelShadow.height / 2
 
-        this.footer.x = this.panel.x
-        this.footer.y = this.panel.height / 2
-        this.footer.resize(this.panel.width, 150)
 
 
         this.content.x = this.panel.x
-        this.content.y = -this.panel.height / 2 - 150
+        this.content.y = this.panel.y//-this.panel.height / 2 //- 150
         this.content.resize(this.panel.width, this.panel.height + 150)
 
+        this.footer.x = this.panel.x
+        this.footer.y = this.content.y + this.panel.height + 150
+        this.footer.resize(this.panel.width, 150)
 
         if (this.header) {
 
@@ -196,6 +205,7 @@ export default class GameInfoPanel extends GameObject {
             if (this.loggie.overlay.isPortrait) {
                 this.header.updateShapeColor(0x181a21)
                 this.closeButton.container.y = 0
+                this.header.y = this.panel.y - 100
             } else {
                 this.header.updateShapeColor(0xFFFFFF, 0)
                 this.closeButton.container.x += 50

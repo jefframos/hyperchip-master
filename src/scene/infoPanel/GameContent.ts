@@ -2,9 +2,12 @@ import ScreenInfo from 'loggie/core/screen/ScreenInfo';
 import MathUtils from 'loggie/utils/MathUtils';
 import ViewUtils from 'loggie/utils/ViewUtils';
 import * as PIXI from 'pixi.js';
+import CycleTextureChanger from './CycleTextureChanger';
 export default class GameContent extends PIXI.Container {
     private gameThumb: PIXI.Sprite;
-    private video: PIXI.Sprite;
+    private textureChanger: CycleTextureChanger = new CycleTextureChanger(3, 0.5);
+    private video!: PIXI.Sprite;
+    private videoElement!: HTMLVideoElement;
     private thumbMask: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private backShape: PIXI.Sprite;
     private maskedContainer: PIXI.Container = new PIXI.Container();
@@ -27,26 +30,20 @@ export default class GameContent extends PIXI.Container {
         this.addChild(this.madeWithText)
         this.madeWithText.tint = 0x181a21
         this.gameThumb = PIXI.Sprite.from('pixijs-logo-transparent-dark')
-        this.maskedContainer.addChild(this.gameThumb)
+        //this.maskedContainer.addChild(this.gameThumb)
+        this.maskedContainer.addChild(this.textureChanger)
         this.gameThumb.anchor.set(0, 0)
 
         this.title = new PIXI.BitmapText('', { fontName: 'Poppins-Black', fontSize: 64 });
         this.addChild(this.title)
         this.madeWithText.style.wordWrap = true;
-
-
         this.resize(800, 150)
-
-
     }
     async loadVideo(url: string): Promise<void> {
-        // Dummy loader
-        // const loadingText = new PIXI.Text('Loading...', { fontSize: 24, fill: '#ffffff' });
-        // loadingText.anchor.set(0.5);
-        // this.videoContainer.addChild(loadingText);
 
         if (this.video) {
             this.video.alpha = 0;
+
         }
         return new Promise((resolve, reject) => {
             PIXI.Assets.load(url).then((resources) => {
@@ -58,12 +55,15 @@ export default class GameContent extends PIXI.Container {
                 this.video = new PIXI.Sprite(videoTexture);
                 this.video.anchor.set(0);
                 this.video.alpha = 0
-                // this.videoSprite.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
 
+                this.videoElement = this.video.texture.baseTexture.resource.source as HTMLVideoElement;
+                this.videoElement.loop = true;
                 this.maskedContainer.addChild(this.video);
-                this.playVideo()
 
                 resolve();
+
+                this.playVideo()
+
             }).catch((error) => {
                 console.error('Error loading video:', error);
                 reject(new Error('Failed to load video'));
@@ -72,22 +72,18 @@ export default class GameContent extends PIXI.Container {
     }
     playVideo() {
         if (this.video) {
-            const videoElement = this.video.texture.baseTexture.resource.source as HTMLVideoElement;
-            videoElement.loop = true;
-            videoElement.play();
+            this.videoElement.play();
         }
     }
 
     pauseVideo() {
         if (this.video) {
-            const videoElement = this.video.texture.baseTexture.resource.source as HTMLVideoElement;
-            videoElement.pause();
+            this.videoElement.pause();
         }
     }
-    setTexture(texture: PIXI.Texture) {
-        this.gameThumb.texture = texture
-
-        this.loadVideo('./video/mutazoneVid.mp4')
+    setTexture(texture: PIXI.Texture[]) {
+        this.gameThumb.texture = texture[0]
+        this.textureChanger.setTextures(texture)
     }
     setTitle(value: string, color: number) {
         this.title.text = value;
@@ -96,17 +92,20 @@ export default class GameContent extends PIXI.Container {
     setContentText(value: string) {
         this.madeWithText.text = value;
     }
+    update(delta: number) {
+        this.textureChanger.update(delta);
+    }
     resize(width: number, height: number) {
         this.backShape.width = width
         this.backShape.height = height
+
 
         if (ScreenInfo.gameWidth < ScreenInfo.gameHeight) {
 
             this.title.x = width / 2 - this.title.width / 2
             this.title.y = height * 0.4
             this.title.scale.set(Math.min(1, ViewUtils.elementScaler(this.title, width * 0.8) || 1))
-            // this.gameThumb.x = 80
-            // this.gameThumb.y = 80
+
             this.gameThumb.scale.set(ViewUtils.elementScaler(this.gameThumb, 1000, height * 0.35))
             this.madeWithText.y = this.title.y + this.title.height + 46
             this.madeWithText.scale.set(Math.min(1, ViewUtils.elementScaler(this.madeWithText, width * 0.9, height - this.madeWithText.y - 20) || 1))
@@ -123,6 +122,11 @@ export default class GameContent extends PIXI.Container {
             this.gameThumb.anchor.y = 0.5
             this.gameThumb.x = this.thumbMask.width * 0.5
             this.gameThumb.y = this.thumbMask.height * 0.6
+
+
+            this.textureChanger.scale.set(ViewUtils.elementEvelop(this.textureChanger, width))
+            this.textureChanger.x = this.thumbMask.width * 0.5
+            this.textureChanger.y = this.thumbMask.height * 0.6
 
             if (this.video) {
                 this.video.scale.set(ViewUtils.elementEvelop(this.video, width + 20))
@@ -155,6 +159,9 @@ export default class GameContent extends PIXI.Container {
             this.gameThumb.x = this.thumbMask.width * 0.5
             this.gameThumb.y = this.thumbMask.height * 0.5
 
+            this.textureChanger.scale.set(ViewUtils.elementEvelop(this.textureChanger, height))
+            this.textureChanger.x = this.thumbMask.width * 0.5
+            this.textureChanger.y = this.thumbMask.height * 0.5
             if (this.video) {
                 this.video.scale.set(ViewUtils.elementEvelop(this.video, height + 20))
                 this.video.anchor.x = 0.5

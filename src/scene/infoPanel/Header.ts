@@ -11,7 +11,8 @@ export default class Header extends PIXI.Container {
 
         this.backShape = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.addChild(this.backShape)
-        this.backShape.alpha = 0xffffff
+        this.backShape.alpha = 0
+        this.backShape.tint = 0x66A7FF
 
         this.title = new PIXI.BitmapText('GAME TITLE', { fontName: 'Poppins-Black', fontSize: 64 });
         this.addChild(this.title)

@@ -18,6 +18,7 @@
 		"assets": "cd rivie && npm run assets",
 		"font": "cd rivie && npm run font",
 		"image": "cd rivie && npm run image",
+		"resize": "cd rivie && npm run resize",
 		"audio": "cd rivie && npm run audio",
 		"json": "cd rivie && npm run json",
 		"shader": "cd rivie && npm run shader",

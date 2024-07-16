@@ -1,10 +1,13 @@
+import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
 import ViewUtils from 'loggie/utils/ViewUtils';
 import * as PIXI from 'pixi.js';
+import { GameData } from '../HyperchipGame';
 export default class Footer extends PIXI.Container {
     private pixiLogo: PIXI.Sprite;
     private playLogo: PIXI.Sprite;
     private backShape: PIXI.Sprite;
     private madeWithText: PIXI.BitmapText;
+    private currentGameData!: GameData;
     constructor() {
         super()
 
@@ -18,11 +21,33 @@ export default class Footer extends PIXI.Container {
         this.addChild(this.pixiLogo)
         this.pixiLogo.anchor.set(0, 0.5)
 
+        this.pixiLogo.cursor = 'pointer'
+        InteractiveEventUtils.addClickTap(this.pixiLogo, () => {
+            window.open('https://pixijs.com/', '_blank');
+        })
+
         this.playLogo = PIXI.Sprite.from('poki-badge_light')
         this.addChild(this.playLogo)
         this.playLogo.anchor.set(1, 0.5)
 
+        this.playLogo.cursor = 'pointer'
+        InteractiveEventUtils.addClickTap(this.playLogo, () => {
+            this.redirectToGame();
+        })
+
         this.resize(800, 150)
+    }
+    redirectToGame() {
+        window.open(this.currentGameData.playLink, '_blank');
+    }
+    setData(gameData: GameData) {
+        this.currentGameData = gameData;
+
+        if (gameData.publisher == 'POKI') {
+            this.playLogo.texture = PIXI.Texture.from('poki-badge_light')
+        } else if (gameData.publisher == 'GITHUB') {
+            this.playLogo.texture = PIXI.Texture.from('play-git-hub')
+        }
     }
     resize(width: number, height: number) {
         this.backShape.width = width

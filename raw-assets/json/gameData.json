@@ -9,10 +9,12 @@
             "title": "MUTAZONE",
             "contentText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
             "contentImage": [
-                "Layer 1"
+                "Layer 1",
+                "muta1",
+                "Layer 4"
             ],
             "video": "video.fmv",
-            "playLink": "www.play.com",
+            "playLink": "https://poki.com/en/g/mutazone",
             "publisher": "POKI",
             "madeWith": "PIXI"
         },
@@ -28,7 +30,7 @@
                 "Layer 4"
             ],
             "video": "video.fmv",
-            "playLink": "www.play.com",
+            "playLink": "https://poki.com/en/g/monster-merge",
             "publisher": "POKI",
             "madeWith": "PIXI"
         },
@@ -44,7 +46,7 @@
                 "Layer 3"
             ],
             "video": "video.fmv",
-            "playLink": "www.play.com",
+            "playLink": "https://poki.com/en/g/spaders",
             "publisher": "POKI",
             "madeWith": "PIXI"
         },
@@ -60,7 +62,7 @@
                 "Layer 6"
             ],
             "video": "video.fmv",
-            "playLink": "www.play.com",
+            "playLink": "https://poki.com/en/g/galactic-empire",
             "publisher": "POKI",
             "madeWith": "PIXI"
         },
@@ -76,8 +78,8 @@
                 "Layer 5"
             ],
             "video": "video.fmv",
-            "playLink": "www.play.com",
-            "publisher": "POKI",
+            "playLink": "https://jefframos.github.io/6words/dist/",
+            "publisher": "GITHUB",
             "madeWith": "PIXI"
         },
         {
@@ -92,7 +94,7 @@
                 "Layer 2"
             ],
             "video": "video.fmv",
-            "playLink": "www.play.com",
+            "playLink": "https://poki.com/en/g/bricks",
             "publisher": "POKI",
             "madeWith": "PIXI"
         }
