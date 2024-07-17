@@ -13,7 +13,9 @@ export default class DragHandler {
     private inertiaInterval: number = 10; // Interval for applying inertia in milliseconds
     private inertiaId: number | null = null;
     private dampingFactor: number = 0.95; // Damping factor to gradually slow down
-
+    private startDragTimeout!: NodeJS.Timeout;
+    public isMoving: boolean = false;
+    private waitingCheck: boolean = false;
     constructor() {
         // Initialize event listeners or setup for drag events
         // For example, mouse or touch event listeners
@@ -24,10 +26,13 @@ export default class DragHandler {
 
     onMouseDown(event: MouseEvent) {
         this.isDragging = true;
+        this.isMoving = false;
+        this.waitingCheck = false;
         this.startTime = performance.now();
         this.prevX = event.clientX;
         this.prevY = event.clientY;
 
+        clearTimeout(this.startDragTimeout);
         // Clear any existing inertia intervals
         this.clearInertia();
     }
@@ -51,6 +56,13 @@ export default class DragHandler {
             this.prevX = this.currentX;
             this.prevY = this.currentY;
             this.startTime = this.endTime;
+
+            if (!this.isMoving && !this.waitingCheck && Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y) > 0.1) {
+                this.waitingCheck = true;
+                this.startDragTimeout = setTimeout(() => {
+                    this.isMoving = true;
+                }, 150);
+            }
         }
     }
 
@@ -58,7 +70,10 @@ export default class DragHandler {
         this.isDragging = false;
         this.startTime = 0;
         this.endTime = 0;
+        this.isMoving = false;
+        this.waitingCheck = false;
 
+        clearTimeout(this.startDragTimeout);
         // Apply inertia if there's velocity
         if (Math.abs(this.velocity.x) > 0 || Math.abs(this.velocity.y) > 0) {
             this.applyInertia();

@@ -53,9 +53,6 @@ export default class GameInfoPanel extends GameObject {
         this.panel.height = 720
         this.panel.tint = 0xfd5392;
 
-
-
-
         // this.cloneMesh = this.poolGameObject(MainTiledMesh, true, 'Layer 1') as MainTiledMesh
         // this.cloneMesh.worldMesh.layer = RenderLayers.UILayerOverlay
 
@@ -82,8 +79,6 @@ export default class GameInfoPanel extends GameObject {
 
         this.header = new Header(this.closeButton);
         this.panelContainer.addChild(this.header)
-
-
 
     }
     setPanelColor(color: number) {
@@ -152,11 +147,19 @@ export default class GameInfoPanel extends GameObject {
 
             this.content.setTitle(this.currentSection.title, this.currentSection.mainColor)
             this.header.setTitle('', this.currentSection.mainColor)
-            this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
-            this.panel.height = Math.max(680, ScreenInfo.gameHeight * 0.4)
 
-            this.panel.x = -this.panel.width / 2
-            this.panel.y = -this.panel.height / 2
+            if (PIXI.isMobile.any || LoggieApplication.debugParams.forceMobile) {
+                this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
+                this.panel.height = Math.max(680, ScreenInfo.gameHeight * 0.4)
+                this.panel.x = -this.panel.width / 2
+                this.panel.y = -this.panel.height / 2
+            } else {
+                this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
+                this.panel.height = Math.max(512, ScreenInfo.gameHeight * 0.6)
+                this.panel.x = -this.panel.width / 2
+                this.panel.y = -this.panel.height / 2 - 100
+            }
+
 
         } else {
             // this.content.setTitle('', this.currentSection.mainColor)

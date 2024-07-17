@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 
 import StateMachine, { State } from './StateMachine';
 
+import gsap from 'gsap';
 import LoggieApplication from 'loggie/LoggieApplication';
 import Loggie from 'loggie/core/Loggie';
 import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
@@ -55,6 +56,8 @@ export default class HyperchipGame extends GameObject {
     private debug!: GameObject;
     private text: PIXI.Text = new PIXI.Text();;
     private debugContainer!: GameViewContainer
+    private buttons: PIXI.Container[] = []
+    private maxButtonSize: number = -1;
     private gameButtonsGo!: GameObject
     private gameButtonsContainer!: GameViewContainer
     private mainMenuContainer!: GameViewContainer
@@ -76,7 +79,7 @@ export default class HyperchipGame extends GameObject {
     private fovEasing: EaseFunction = Ease.easeInOutBack
 
     private gameDataMap: Map<string, GameData> = new Map();
-
+    private menuDirection: number = 1
 
 
     constructor() {
@@ -159,7 +162,7 @@ export default class HyperchipGame extends GameObject {
 
         const containerGo = GameViewUtils.makeContainer(this, RenderLayers.UILayerOverlay)
         this.mainMenuContainer = containerGo.findComponent<GameViewContainer>(GameViewContainer)
-        this.aboutButton = this.poolComponent(BitmapTextButton, true, '     ABOUT', 0xFFFFFF, 0xF45BED, 0x209cff) as BitmapTextButton
+        this.aboutButton = this.poolComponent(BitmapTextButton, true, '     ABOUT     ', 0xFFFFFF, 0xF45BED, 0x209cff) as BitmapTextButton
         this.aboutButton.setDefaultPanelColor(0x209cff)
         this.aboutButton.container.scale.set(1.1)
         this.aboutButton.addShadow()
@@ -171,7 +174,7 @@ export default class HyperchipGame extends GameObject {
             // }
         })
 
-        this.gamesButton = this.poolComponent(BitmapTextButton, true, '     GAMES', 0xFFFFFF) as BitmapTextButton
+        this.gamesButton = this.poolComponent(BitmapTextButton, true, '     GAMES     ', 0xFFFFFF) as BitmapTextButton
         this.gamesButton.setDefaultPanelColor(0xF45BED)
         this.gamesButton.container.scale.set(1.1)
         this.gamesButton.addShadow()
@@ -184,6 +187,8 @@ export default class HyperchipGame extends GameObject {
             }
         })
 
+
+
         this.gameButtonsGo = GameViewUtils.makeContainer(this, RenderLayers.UILayerOverlay)
         this.gameButtonsContainer = this.gameButtonsGo.findComponent<GameViewContainer>(GameViewContainer)
         this.gameButtonsGo.x = -520
@@ -195,6 +200,7 @@ export default class HyperchipGame extends GameObject {
 
                     const gameButton = this.poolComponent(BitmapTextButton, true, element.name.toUpperCase(), 0xFFFFFF, 0x209cff, element.mainColor) as BitmapTextButton
                     this.gameButtonsContainer.addChild(gameButton.container)
+                    this.buttons.push(gameButton.container);
                     gameButton.container.y = this.buttonsList.size * 100
                     gameButton.onClick.add(() => {
                         if (this.stateMachine.currentState == State.Standard) {
@@ -207,6 +213,10 @@ export default class HyperchipGame extends GameObject {
                         this.activeButton?.setActive(true)
                     })
                     this.buttonsList.set(element.id, gameButton.GUID);
+
+                    if (gameButton.container.width > this.maxButtonSize) {
+                        this.maxButtonSize = gameButton.container.width
+                    }
                 });
             }
         }
@@ -221,6 +231,22 @@ export default class HyperchipGame extends GameObject {
             }
         }, 100);
         this.meshGrid = this.poolGameObject(MeshGrid, true, this.gameDataMap)
+
+        this.meshGrid.onTileSelected.add((tileId: string) => {
+            if (this.stateMachine.currentState == (State.Standard)) {
+                const targetMesh = this.meshGrid.moveToId(tileId);
+                if (targetMesh) {
+                    this.stateMachine.setState(State.SectionOpen)
+                    this.gameInfoPanel.snapToMesh(targetMesh)
+                    this.gameInfoPanel.showSection(this.gameDataMap.get(tileId))
+                }
+            }
+        })
+
+        this.mainMenuContainer.view.alpha = 0
+        this.logo.view.alpha = 0
+        this.gameButtonsContainer.view.alpha = 0
+        gsap.to([this.mainMenuContainer.view, this.logo.view, this.gameButtonsContainer.view], { alpha: 1, duration: 0.5, delay: 1.5 })
 
         this.debug = this.poolGameObject(GameObject, true);
         const container = this.debug.poolComponent(GameViewContainer, true, RenderLayers.UILayerOverlay)
@@ -271,34 +297,37 @@ export default class HyperchipGame extends GameObject {
     closeCurrentSection() {
         this.activeButton?.setActive(false)
         this.gameInfoPanel.hideSection()
-        this.menuCollapsed = false;
+        //this.menuCollapsed = false;
     }
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
 
+        if (PIXI.isMobile.any && this.loggie.overlay.isPortrait) {
+            this.buttons.forEach(element => {
+                element.x = this.maxButtonSize - element.width
+            });
+            this.menuDirection = -1
+        } else {
+            this.buttons.forEach(element => {
+                element.x = 0
+            });
+            this.menuDirection = 1
+        }
 
         if (this.logo) {
             if (PIXI.isMobile.any) {
 
                 if (this.loggie.overlay.isPortrait) {
                     this.logo.view.texture = PIXI.Texture.from('logo3')
-                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.4, this.loggie.overlay.right * 0.4)))
+                    this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.35, this.loggie.overlay.right * 0.35)))
                 } else {
                     this.logo.view.texture = PIXI.Texture.from('logo')
                     this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, 400)))
 
-                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.3, this.loggie.overlay.down * 0.3)))
-
                 }
             } else {
-                this.logo.view.texture = PIXI.Texture.from('logo')
-                if (this.loggie.overlay.isPortrait) {
-                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.right * 0.4, this.loggie.overlay.right * 0.4)))
-
-                    //this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, this.loggie.overlay.down * 0.2, this.loggie.overlay.down * 0.2)))
-                } else {
-                }
-                this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, 400)))
+                this.logo.view.texture = PIXI.Texture.from('logo2')
+                this.logo.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.logo.view, 300)))
             }
         }
 
@@ -325,16 +354,34 @@ export default class HyperchipGame extends GameObject {
             this.leftVignette.view.height = this.loggie.overlay.down + 20
         }
 
+        this.logo.view.visible = true;
 
         if (this.stateMachine.currentState == State.Standard) {
             this.targetBackgroundAlpha = MathUtils.lerp(this.targetBackgroundAlpha, 0.35, 0.1)
-            this.buttonsTargetPosition = 40
-            this.mainMenuContainer.gameObject.x = 15
+            if (this.loggie.overlay.isPortrait) {
+                if (PIXI.isMobile.any) {
+                    this.mainMenuContainer.gameObject.x = this.loggie.overlay.right - 420
+                    this.buttonsTargetPosition = this.loggie.overlay.right - this.maxButtonSize - 10
+                } else {
+
+                    this.buttonsTargetPosition = 40
+                    this.mainMenuContainer.gameObject.x = 15
+                }
+            } else {
+                this.buttonsTargetPosition = 40
+                this.mainMenuContainer.gameObject.x = 15
+            }
         } else if (this.stateMachine.currentState == State.SectionOpen) {
             this.targetBackgroundAlpha = MathUtils.lerp(this.targetBackgroundAlpha, 0.65, 0.1)
             if (this.loggie.overlay.isPortrait) {
-                this.mainMenuContainer.gameObject.x = -500
-                this.buttonsTargetPosition = -this.gameButtonsContainer.view.width - 50
+                if (PIXI.isMobile.any) {
+                    this.mainMenuContainer.gameObject.x = this.loggie.overlay.right + 50
+                    this.buttonsTargetPosition = this.loggie.overlay.right + this.gameButtonsContainer.view.width
+                } else {
+                    this.logo.view.visible = false;
+                    this.mainMenuContainer.gameObject.x = -500
+                    this.buttonsTargetPosition = -this.gameButtonsContainer.view.width - 50
+                }
                 this.leftVignette.view.alpha = MathUtils.lerp(this.leftVignette.view.alpha, 0, 0.1)
 
             } else {
@@ -343,8 +390,18 @@ export default class HyperchipGame extends GameObject {
                 this.buttonsTargetPosition = 40
             }
         }
+
         if (this.menuCollapsed) {
-            this.buttonsTargetPosition = -this.gameButtonsContainer.view.width - 50
+            if (PIXI.isMobile.any && this.loggie.overlay.isPortrait) {
+                this.buttonsTargetPosition = this.loggie.overlay.right + 50
+            } else {
+                this.buttonsTargetPosition = -this.gameButtonsContainer.view.width - 50
+            }
+        }
+        if (PIXI.isMobile.any) {
+            this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height
+        } else {
+            this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height - 20
         }
 
         this.gamesButton.setActive(!this.menuCollapsed)
@@ -352,7 +409,6 @@ export default class HyperchipGame extends GameObject {
         this.gameButtonsGo.x = MathUtils.lerp(this.gameButtonsGo.x, this.buttonsTargetPosition, 0.2)
 
 
-        this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height - 20
 
 
         // this.logo.gameObject.x = this.loggie.overlay.right /2 - this.logo.view.width /2
@@ -360,28 +416,21 @@ export default class HyperchipGame extends GameObject {
 
         if (this.loggie.overlay.isPortrait) {
             if (PIXI.isMobile.any) {
+                this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, this.loggie.overlay.right / 2 - this.logo.view.width / 2, 0.1)
+                this.logo.gameObject.z = 30
+                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height
 
-                if (this.stateMachine.currentState == State.SectionOpen) {
-                    this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, this.loggie.overlay.right / 2 - this.logo.view.width / 2, 0.1)
-                    this.logo.gameObject.z = 30
-                } else {
-                    this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, this.loggie.overlay.right - this.logo.view.width - 20, 0.1)
-                    this.logo.gameObject.z = 60
-                }
-                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 120
             } else {
                 this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, 20, 0.1)
             }
             this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.9, this.loggie.overlay.down * 0.5)))
         } else {
             if (PIXI.isMobile.any) {
-                this.logo.gameObject.x = this.loggie.overlay.right - this.logo.view.width - 20
-                this.logo.gameObject.z = 20
-                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height / 2 - 40
+                this.logo.gameObject.x = 20
+                this.logo.gameObject.z = 40
+                this.mainMenuContainer.gameObject.z = this.logo.gameObject.z + this.logo.view.height
             }
-            //this.logo.gameObject.x = MathUtils.lerp(this.logo.gameObject.x, 20, 0.1)
-
-            this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.3, this.loggie.overlay.down * 0.55)))
+            this.gameButtonsContainer.view.scale.set(Math.min(1, ViewUtils.elementScaler(this.gameButtonsContainer.view, this.loggie.overlay.right * 0.3, this.loggie.overlay.down * 0.5)))
         }
 
 

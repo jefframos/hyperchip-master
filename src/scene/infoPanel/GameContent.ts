@@ -34,8 +34,11 @@ export default class GameContent extends PIXI.Container {
         this.maskedContainer.addChild(this.textureChanger)
         this.gameThumb.anchor.set(0, 0)
 
-        this.title = new PIXI.BitmapText('', { fontName: 'Poppins-Black', fontSize: 64 });
+        this.title = new PIXI.BitmapText('', { fontName: 'Poppins-Black', fontSize: 72 });
         this.addChild(this.title)
+        if (PIXI.isMobile.any) {
+            //this.madeWithText.style.fontSize = 80
+        }
         this.madeWithText.style.wordWrap = true;
         this.resize(800, 150)
     }
@@ -108,8 +111,8 @@ export default class GameContent extends PIXI.Container {
 
             this.gameThumb.scale.set(ViewUtils.elementScaler(this.gameThumb, 1000, height * 0.35))
             this.madeWithText.y = this.title.y + this.title.height + 46
-            this.madeWithText.scale.set(Math.min(1, ViewUtils.elementScaler(this.madeWithText, width * 0.9, height - this.madeWithText.y - 20) || 1))
             this.madeWithText.style.wordWrapWidth = width * 0.9;
+            this.madeWithText.scale.set(Math.min(1, ViewUtils.elementScaler(this.madeWithText, this.madeWithText.style.wordWrapWidth, height - this.madeWithText.y - 20) || 1))
             this.madeWithText.x = width / 2 - this.madeWithText.width / 2 //+ width * 0.05
 
 

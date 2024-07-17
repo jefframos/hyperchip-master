@@ -6,7 +6,10 @@ import GameObject from 'loggie/core/gameObject/GameObject';
 import Vector3 from 'loggie/core/gameObject/Vector3';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
+import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
 import MathUtils from 'loggie/utils/MathUtils';
+import ViewUtils from 'loggie/utils/ViewUtils';
+import { Signal } from 'signals';
 import { TextureData } from './MeshGrid';
 import WorldMeshComponent from './WorldMeshComponent';
 
@@ -19,7 +22,9 @@ export default class MainTiledMesh extends GameObject {
     public userData!: TextureData;
     public text: PIXI.Text = new PIXI.Text();
     private segments: number = 5
+    private selected: boolean = false
 
+    public onTileSelected: Signal = new Signal();
     constructor() {
         super()
 
@@ -32,6 +37,21 @@ export default class MainTiledMesh extends GameObject {
 
         this.nest = this.poolGameObject(GameObject, true)
         this.centerContainer = this.nest.poolComponent(GameViewContainer, true, RenderLayers.FrontOverlayLayer)
+        const tracker = new PIXI.Sprite(PIXI.Texture.WHITE)
+        this.centerContainer.addChild(tracker)
+        tracker.anchor.set(0.5)
+        tracker.alpha = 0
+        tracker.scale.set(ViewUtils.elementScaler(tracker, 450))
+
+        InteractiveEventUtils.addPointerDown(tracker, () => {
+            this.selected = true;
+        })
+
+        InteractiveEventUtils.addPointerUp(tracker, () => {
+            if (this.selected) {
+                this.onTileSelected.dispatch(this);
+            }
+        })
 
         const meshConfig: MeshConfig = { width: textSize, height: textSize, segmentsX: this.segments - 1, segmentsY: this.segments - 1, anchor: new Vector3(0.5, 0.5, 0) } as MeshConfig
         this.worldMesh.build('Layer 1', meshConfig)

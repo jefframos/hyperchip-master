@@ -1,7 +1,10 @@
 import GameObject from 'loggie/core/gameObject/GameObject';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
+import GameViewSprite from 'loggie/core/view/GameViewSprite';
 import MathUtils from 'loggie/utils/MathUtils';
 import * as PIXI from 'pixi.js';
+import { Signal } from 'signals';
 import DragHandler from './DragHandler';
 import { GameData } from './HyperchipGame';
 import MainTiledMesh from './MainTiledMesh';
@@ -29,9 +32,13 @@ export default class MeshGrid extends GameObject {
     private state: MeshGridState = MeshGridState.IDLE;
     public dragHandler: DragHandler = new DragHandler();
 
+    public blocker!: GameViewSprite;
     public textContainer!: GameViewContainer;
     public text: PIXI.Text = new PIXI.Text();
     public locked: boolean = false;
+
+    public onTileSelected: Signal = new Signal();
+
 
     constructor() {
         super();
@@ -41,6 +48,11 @@ export default class MeshGrid extends GameObject {
         super.build();
 
         this.gameData = gameData;
+
+        this.blocker = this.poolComponent(GameViewSprite, true, RenderLayers.UILayerOverlay, PIXI.Texture.WHITE)
+        this.blocker.view.scale.set(500)
+        this.blocker.view.interactive = true;
+        this.blocker.view.alpha = 0
 
         for (const [key, value] of this.gameData) {
             //console.log(`Key: ${key}, Value: ${value}`);
@@ -55,6 +67,10 @@ export default class MeshGrid extends GameObject {
                 mesh.userData = { id: gameData.id };  // Store the id in userData
                 this.meshGrid.push(mesh);
 
+                mesh.onTileSelected.add((meshSelected: MainTiledMesh) => {
+                    this.onTileSelected.dispatch(meshSelected.userData.id);
+                })
+
                 mesh.x = (col - Math.floor(this.cols / 2)) * this.cellSize;
                 mesh.z = (row - Math.floor(this.rows / 2)) * this.cellSize;
             }
@@ -64,9 +80,13 @@ export default class MeshGrid extends GameObject {
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
         const normalizedDeltaTime = delta * 60;
+        const dragVelocity = this.dragHandler.getVelocity()
+
+        this.blocker.view.visible = this.dragHandler.isMoving
+
         if (this.state === MeshGridState.IDLE && !this.locked) {
             const speed = PIXI.isMobile.any ? 20 : 2;
-            this.setOffset(this.dragHandler.getVelocity(), speed / normalizedDeltaTime);
+            this.setOffset(dragVelocity, speed / normalizedDeltaTime);
         } else if (this.state === MeshGridState.TRANSITIONING) {
             this.updateTransition(normalizedDeltaTime);
         }
