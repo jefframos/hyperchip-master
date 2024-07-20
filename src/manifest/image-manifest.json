@@ -34,6 +34,17 @@
           }
         },
         {
+          "name": "master/textures/seamless-starfield-texture.jpg",
+          "srcs": [
+            "master/textures/seamless-starfield-texture.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
           "name": "master/textures/testTexture2.png",
           "srcs": [
             "master/textures/testTexture2.png"

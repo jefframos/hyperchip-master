@@ -54,7 +54,7 @@ export default class MainTiledMesh extends GameObject {
         })
 
         const meshConfig: MeshConfig = { width: textSize, height: textSize, segmentsX: this.segments - 1, segmentsY: this.segments - 1, anchor: new Vector3(0.5, 0.5, 0) } as MeshConfig
-        this.worldMesh.build('Layer 1', meshConfig)
+        this.worldMesh.build('galactic', meshConfig)
 
         const indices: number[] = [];
         for (let index = 0; index < this.worldMesh.mesh.geometry.getBuffer('aUvs').data.length; index++) {
