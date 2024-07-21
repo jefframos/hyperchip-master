@@ -2,10 +2,10 @@ import * as PIXI from 'pixi.js';
 
 import PerspectiveCamera, { CameraViewType } from 'loggie/core/camera/PerspectiveCamera';
 
+import HyperchipScene from './scene/HyperchipScene';
 import LoggieApplication from 'loggie/LoggieApplication';
 import LoggieSettings from 'loggie/LoggieSettings';
 import { OrientationType } from 'loggie/core/screen/OrientationType';
-import HyperchipScene from './scene/HyperchipScene';
 
 LoggieApplication.app = new PIXI.Application<HTMLCanvasElement>({
     resolution: Math.min(window.devicePixelRatio, 1),
@@ -77,4 +77,4 @@ if (LoggieApplication.debugParams && LoggieApplication.debugParams.scene) {
 LoggieApplication.loadScene(HyperchipScene)
 
 
-javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//cdn.jsdelivr.net/gh/Kevnz/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
+// javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//cdn.jsdelivr.net/gh/Kevnz/stats.js/build/stats.min.js'; document.head.appendChild(script); })()

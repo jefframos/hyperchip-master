@@ -334,6 +334,17 @@
               "m": true
             }
           }
+        },
+        {
+          "name": "onDemand/w1.png",
+          "srcs": [
+            "onDemand/w1.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
         }
       ]
     }

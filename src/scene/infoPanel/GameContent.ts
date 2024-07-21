@@ -1,8 +1,11 @@
-import ScreenInfo from 'loggie/core/screen/ScreenInfo';
-import MathUtils from 'loggie/utils/MathUtils';
-import ViewUtils from 'loggie/utils/ViewUtils';
 import * as PIXI from 'pixi.js';
+
 import CycleTextureChangerAsync from './CycleTextureChangerAsync';
+import DataUtils from 'loggie/utils/DataUtils';
+import MathUtils from 'loggie/utils/MathUtils';
+import ScreenInfo from 'loggie/core/screen/ScreenInfo';
+import ViewUtils from 'loggie/utils/ViewUtils';
+
 export default class GameContent extends PIXI.Container {
     private gameThumb: PIXI.Sprite;
     private textureChanger: CycleTextureChangerAsync = new CycleTextureChangerAsync(3, 0.5);
@@ -29,6 +32,7 @@ export default class GameContent extends PIXI.Container {
         this.madeWithText = new PIXI.Text('Made with ', { fontFamily: 'Poppins-Regular', fontSize: 24 });
         this.addChild(this.madeWithText)
         this.madeWithText.tint = 0x181a21
+        this.madeWithText.resolution = 3
         this.gameThumb = PIXI.Sprite.from('pixijs-logo-transparent-dark')
         //this.maskedContainer.addChild(this.gameThumb)
         this.maskedContainer.addChild(this.textureChanger)
@@ -88,7 +92,7 @@ export default class GameContent extends PIXI.Container {
         this.gameThumb.texture = thumb
 
 
-        this.textureChanger.setTextureURLs(textures)
+        this.textureChanger.setTextureURLs(DataUtils.shuffleArray(textures))
         //this.textureChanger.setTextures(texture)
     }
     setTitle(value: string, color: number) {
@@ -146,7 +150,7 @@ export default class GameContent extends PIXI.Container {
         } else {
 
             this.title.x = width / 2 + 20
-            this.title.y = 50
+            this.title.y = 20
             this.title.scale.set(Math.min(1, ViewUtils.elementScaler(this.title, width / 2 * 0.8) || 1))
 
 
@@ -155,7 +159,7 @@ export default class GameContent extends PIXI.Container {
             this.thumbMask.y = 0
 
             this.madeWithText.x = this.title.x
-            this.madeWithText.y = this.title.y + this.title.height + 20
+            this.madeWithText.y = this.title.y + this.title.height + 50
             this.madeWithText.scale.set(Math.min(1, ViewUtils.elementScaler(this.madeWithText, height - this.madeWithText.y - 20) || 1))
             this.madeWithText.style.wordWrapWidth = (width / 2 * 0.9);
 

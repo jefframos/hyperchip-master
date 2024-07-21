@@ -7,7 +7,7 @@
             "mainColor": "0xD382F7",
             "secondaryColor": 6096809,
             "title": "MUTAZONE",
-            "contentText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+            "contentText": "In MUTAZONE, players must survive relentless waves of zombies in a post-apocalyptic world. Enhance your gear with powerful weapons and armor, and customize your character with unique clothes. Along the way, collect pets with special abilities to aid in battle. Only the resourceful will endure to face the ultimate test of survival at the end. Will you conquer the zombie apocalypse, or join the fallen? The fate of humanity rests in your hands.",
             "contentImage": [
                 "./images/onDemand/mu1.png",
                 "./images/onDemand/mu2.png",
@@ -27,7 +27,7 @@
             "mainColor": "0x6063A8",
             "secondaryColor": 6096809,
             "title": "MONSTER MERGE",
-            "contentText": "loren ipsum",
+            "contentText": "In Monster Merge, players embark on a magical journey through an ever-expanding castle. With each successful merge, new sections of the castle are unveiled, revealing hidden treasures and secrets. Engage with a variety of fantastical characters, including monsters, fairytale creatures, humans, and unicorns. Strategically combine these characters to unlock powerful upgrades and progress through the castle's enchanting levels. Discover the wonders that lie within as you merge your way to greatness in this captivating adventure.",
             "contentImage": [
                 "./images/onDemand/mm1.png",
                 "./images/onDemand/mm2.png",
@@ -47,7 +47,7 @@
             "mainColor": "0xEF4DA1",
             "secondaryColor": 6096809,
             "title": "SPADERS",
-            "contentText": "loren ipsum",
+            "contentText": "In Spaders, players embark on a mindful puzzle adventure, guiding adorable creatures to clean the board and advance through increasingly challenging levels. Each puzzle solved unlocks new areas. Strategically direct your little helpers to clear the way and uncover hidden surprises as you progress. With each level, sharpen your problem-solving skills and immerse yourself in the tranquil yet engaging world of Spaders.",
             "contentImage": [
                 "./images/onDemand/s1.png",
                 "./images/onDemand/s2.png",
@@ -67,7 +67,7 @@
             "mainColor": "0x191659",
             "secondaryColor": 6096809,
             "title": "GALACTIC EMPIRE",
-            "contentText": "loren ipsum",
+            "contentText": "In Galactic Empire, players dive into an idle/merge game where they drain resources from asteroids to bolster their fleet. By strategically merging and upgrading ships, they prepare to face off against a formidable legion of bandits. As resources are collected and fleets are enhanced, new challenges and powerful adversaries emerge, demanding keen strategy and efficient resource management. Conquer the galaxy, build an unstoppable armada, and crush the bandit forces in Galactic Empire.",
             "contentImage": [
                 "./images/onDemand/ge1.png",
                 "./images/onDemand/ge2.png",
@@ -87,9 +87,9 @@
             "mainColor": "0xF08ABC",
             "secondaryColor": 6096809,
             "title": "6 WORDS",
-            "contentText": "loren ipsum",
+            "contentText": "In 6Words, players engage in a daily word puzzle challenge, using a limited set of letters to find six different words. Each day brings a new combination of letters, testing vocabulary and creativity. With only a few letters at your disposal, can you uncover all six words before the day ends? Dive into the addictive fun of 6Words and sharpen your linguistic skills daily.",
             "contentImage": [
-                "Layer 5"
+                "./images/onDemand/w1.png"
             ],
             "video": "video.fmv",
             "playLink": "https://jefframos.github.io/6words/dist/",
