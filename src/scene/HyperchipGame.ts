@@ -2,26 +2,26 @@ import * as PIXI from 'pixi.js';
 
 import StateMachine, { State } from './StateMachine';
 
-import BitmapTextButton from './BitmapTextButton';
-import { ColorStop } from 'loggie/utils/color/ColorStop';
-import ColorUtils from 'loggie/utils/color/ColorUtils';
-import Ease from 'loggie/utils/tween2/Ease';
-import { EaseFunction } from 'loggie/utils/tween2/Tweener';
-import GameInfoPanel from './infoPanel/GameInfoPanel';
+import gsap from 'gsap';
+import LoggieApplication from 'loggie/LoggieApplication';
+import Loggie from 'loggie/core/Loggie';
+import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
 import GameObject from 'loggie/core/gameObject/GameObject';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import GameViewSprite from 'loggie/core/view/GameViewSprite';
 import GameViewUtils from 'loggie/core/view/GameViewUtils';
 import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
-import Loggie from 'loggie/core/Loggie';
-import LoggieApplication from 'loggie/LoggieApplication';
 import MathUtils from 'loggie/utils/MathUtils';
-import MeshGrid from './MeshGrid';
-import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
-import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
-import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import ViewUtils from 'loggie/utils/ViewUtils';
-import gsap from 'gsap';
+import { ColorStop } from 'loggie/utils/color/ColorStop';
+import ColorUtils from 'loggie/utils/color/ColorUtils';
+import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
+import Ease from 'loggie/utils/tween2/Ease';
+import { EaseFunction } from 'loggie/utils/tween2/Tweener';
+import BitmapTextButton from './BitmapTextButton';
+import MeshGrid from './MeshGrid';
+import GameInfoPanel from './infoPanel/GameInfoPanel';
 
 export interface GameData {
     id: string;
@@ -57,6 +57,7 @@ export default class HyperchipGame extends GameObject {
     private text: PIXI.Text = new PIXI.Text();
     private debugContainer!: GameViewContainer
     private spaceTexture!: PIXI.TilingSprite;
+    private spaceTexture2!: PIXI.TilingSprite;
     private spaceContainer!: GameViewContainer
     private buttons: PIXI.Container[] = []
     private maxButtonSize: number = -1;
@@ -131,6 +132,13 @@ export default class HyperchipGame extends GameObject {
         this.spaceTexture.tileScale.set(2)
         this.spaceTexture.width = 15000
         this.spaceTexture.height = 15000
+
+        // this.spaceTexture2 = new PIXI.TilingSprite(PIXI.Texture.from('stars.png'))
+        // this.spaceContainer.addChild(this.spaceTexture2)
+        // this.spaceTexture2.anchor.set(0.5)
+        // this.spaceTexture2.tileScale.set(1.5)
+        // this.spaceTexture2.width = 15000
+        // this.spaceTexture2.height = 15000
 
         //const ropes = this.poolGameObject(TopRopes, true);
         this.flatBackground = GameViewUtils.makeSprite(this, PIXI.Texture.WHITE, RenderLayers.BaseB).findComponent<GameViewSprite>(GameViewSprite)
@@ -349,7 +357,7 @@ export default class HyperchipGame extends GameObject {
             return
         }
 
-        
+
 
 
         this.meshGrid.locked = this.stateMachine.currentState != State.Standard
@@ -455,16 +463,16 @@ export default class HyperchipGame extends GameObject {
 
         this.gameInfoPanel.setPanelColor(ColorUtils.interpolateGradient(this.gradient2, Math.cos(Loggie.Time * 0.5) * 0.5 + 0.5))
         if (this.flatBackground) {
-            this.flatBackground.view.width = this.perspCamera.cameraViewBounds.width
-            this.flatBackground.view.height = this.perspCamera.cameraViewBounds.height
+            this.flatBackground.view.width = this.perspCamera.cameraViewBounds.width + 2
+            this.flatBackground.view.height = this.perspCamera.cameraViewBounds.height + 2
             this.flatBackground.gameObject.x = this.perspCamera.cameraViewBounds.center.x
             this.flatBackground.gameObject.z = this.perspCamera.cameraViewBounds.center.y
             this.flatBackground.view.tint = ColorUtils.interpolateGradient(this.gradientFlat, Math.cos(Loggie.Time * 0.5) * 0.5 + 0.5)
 
         }
         if (this.whiteIntro) {
-            this.whiteIntro.view.width = this.perspCamera.cameraViewBounds.width//this.loggie.overlay.right / (1 - Camera.Zoom)
-            this.whiteIntro.view.height = this.perspCamera.cameraViewBounds.height
+            this.whiteIntro.view.width = this.perspCamera.cameraViewBounds.width + 2//this.loggie.overlay.right / (1 - Camera.Zoom)
+            this.whiteIntro.view.height = this.perspCamera.cameraViewBounds.height + 2
             this.whiteIntro.view.alpha = this.targetBackgroundAlpha * 0.5
             this.whiteIntro.gameObject.x = this.perspCamera.cameraViewBounds.center.x
             this.whiteIntro.gameObject.z = this.perspCamera.cameraViewBounds.center.y
@@ -473,15 +481,15 @@ export default class HyperchipGame extends GameObject {
 
 
         if (this.topVignette) {
-            this.topVignette.view.width = this.perspCamera.cameraViewBounds.width
+            this.topVignette.view.width = this.perspCamera.cameraViewBounds.width + 2
             this.topVignette.gameObject.x = this.perspCamera.cameraViewBounds.x
             this.topVignette.gameObject.z = this.perspCamera.cameraViewBounds.y
             //this.topVignette.view.tint = ColorUtils.interpolateGradient(this.gradient2, Math.sin(Loggie.Time * 0.5) * 0.5 + 0.5)
         }
 
         if (this.whiteOuter) {
-            this.whiteOuter.view.width = this.perspCamera.cameraViewBounds.width
-            this.whiteOuter.view.height = this.perspCamera.cameraViewBounds.height
+            this.whiteOuter.view.width = this.perspCamera.cameraViewBounds.width + 2
+            this.whiteOuter.view.height = this.perspCamera.cameraViewBounds.height + 2
             this.whiteOuter.view.alpha = this.targetBackgroundAlpha
             this.whiteOuter.gameObject.x = this.perspCamera.cameraViewBounds.center.x
             this.whiteOuter.gameObject.z = this.perspCamera.cameraViewBounds.center.y
@@ -490,6 +498,11 @@ export default class HyperchipGame extends GameObject {
         if (this.spaceTexture) {
             this.spaceTexture.tilePosition.y += delta * 32;
             this.spaceTexture.tilePosition.y %= 256;
+        }
+        if (this.spaceTexture2) {
+            // this.spaceTexture2.tint = ColorUtils.interpolateGradient(this.gradient2, Math.sin(Loggie.Time * 0.5) * 0.5 + 0.5)
+            this.spaceTexture2.tilePosition.y += delta * 24;
+            this.spaceTexture2.tilePosition.y %= 256;
         }
     }
 }
