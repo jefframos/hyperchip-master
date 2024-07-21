@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
 
-import CycleTextureChangerAsync from './CycleTextureChangerAsync';
+import ScreenInfo from 'loggie/core/screen/ScreenInfo';
 import DataUtils from 'loggie/utils/DataUtils';
 import MathUtils from 'loggie/utils/MathUtils';
-import ScreenInfo from 'loggie/core/screen/ScreenInfo';
 import ViewUtils from 'loggie/utils/ViewUtils';
+import CycleTextureChangerAsync from './CycleTextureChangerAsync';
 
 export default class GameContent extends PIXI.Container {
     private gameThumb: PIXI.Sprite;
@@ -14,7 +14,7 @@ export default class GameContent extends PIXI.Container {
     private thumbMask: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private backShape: PIXI.Sprite;
     private maskedContainer: PIXI.Container = new PIXI.Container();
-    private madeWithText: PIXI.Text;
+    private contentText: PIXI.Text;
     private title!: PIXI.BitmapText;
 
     constructor() {
@@ -29,10 +29,10 @@ export default class GameContent extends PIXI.Container {
 
         this.addChild(this.thumbMask)
         this.maskedContainer.mask = this.thumbMask
-        this.madeWithText = new PIXI.Text('Made with ', { fontFamily: 'Poppins-Regular', fontSize: 24 });
-        this.addChild(this.madeWithText)
-        this.madeWithText.tint = 0x181a21
-        this.madeWithText.resolution = 3
+        this.contentText = new PIXI.Text('Made with ', { fontFamily: 'Poppins-Regular', fontSize: 24 });
+        this.addChild(this.contentText)
+        this.contentText.tint = 0x181a21
+        this.contentText.resolution = 1
         this.gameThumb = PIXI.Sprite.from('pixijs-logo-transparent-dark')
         //this.maskedContainer.addChild(this.gameThumb)
         this.maskedContainer.addChild(this.textureChanger)
@@ -43,7 +43,7 @@ export default class GameContent extends PIXI.Container {
         if (PIXI.isMobile.any) {
             //this.madeWithText.style.fontSize = 80
         }
-        this.madeWithText.style.wordWrap = true;
+        this.contentText.style.wordWrap = true;
         this.resize(800, 150)
     }
     async loadVideo(url: string): Promise<void> {
@@ -100,10 +100,13 @@ export default class GameContent extends PIXI.Container {
         this.title.tint = color;
     }
     setContentText(value: string) {
-        this.madeWithText.text = value;
+        this.contentText.text = value;
     }
     update(delta: number) {
         this.textureChanger.update(delta);
+    }
+    hide() {
+        this.textureChanger.hide()
     }
     resize(width: number, height: number) {
         this.backShape.width = width
@@ -117,10 +120,10 @@ export default class GameContent extends PIXI.Container {
             this.title.scale.set(Math.min(1, ViewUtils.elementScaler(this.title, width * 0.8) || 1))
 
             this.gameThumb.scale.set(ViewUtils.elementScaler(this.gameThumb, 1000, height * 0.35))
-            this.madeWithText.y = this.title.y + this.title.height + 46
-            this.madeWithText.style.wordWrapWidth = width * 0.9;
-            this.madeWithText.scale.set(Math.min(1, ViewUtils.elementScaler(this.madeWithText, this.madeWithText.style.wordWrapWidth, height - this.madeWithText.y - 20) || 1))
-            this.madeWithText.x = width / 2 - this.madeWithText.width / 2 //+ width * 0.05
+            this.contentText.y = this.title.y + this.title.height + 46
+            this.contentText.style.wordWrapWidth = width * 0.9;
+            //this.contentText.scale.set(Math.min(1, ViewUtils.elementScaler(this.contentText, this.contentText.style.wordWrapWidth, height - this.contentText.y - 20) || 1))
+            this.contentText.x = width / 2 - this.contentText.width / 2 //+ width * 0.05
 
 
             this.thumbMask.y = 0
@@ -158,10 +161,10 @@ export default class GameContent extends PIXI.Container {
             this.thumbMask.height = height
             this.thumbMask.y = 0
 
-            this.madeWithText.x = this.title.x
-            this.madeWithText.y = this.title.y + this.title.height + 50
-            this.madeWithText.scale.set(Math.min(1, ViewUtils.elementScaler(this.madeWithText, height - this.madeWithText.y - 20) || 1))
-            this.madeWithText.style.wordWrapWidth = (width / 2 * 0.9);
+            this.contentText.x = this.title.x
+            this.contentText.y = this.title.y + this.title.height + 50
+            //this.contentText.scale.set(Math.min(1, ViewUtils.elementScaler(this.contentText, height - this.contentText.y - 20) || 1))
+            this.contentText.style.wordWrapWidth = (width / 2 * 0.9);
 
             this.gameThumb.scale.set(ViewUtils.elementEvelop(this.gameThumb, height))
             this.gameThumb.anchor.x = 0.5

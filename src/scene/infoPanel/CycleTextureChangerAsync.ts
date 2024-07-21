@@ -87,4 +87,9 @@ export default class CycleTextureChangerAsync extends Container {
             this.currentSprite.alpha = 1 - this.fadeProgress;
         }
     }
+    hide() {
+        this.fadeProgress = 0;
+        this.currentIndex = 0;
+        this.elapsedTime = 0;
+    }
 }

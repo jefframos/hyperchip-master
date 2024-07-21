@@ -68,6 +68,7 @@ export default class HyperchipGame extends GameObject {
 
     private perspCamera!: PerspectiveCamera;
     private menuCollapsed: boolean = true;
+    private aboutActive: boolean = true;
     private activeButton!: BitmapTextButton;
     private aboutButton!: BitmapTextButton;
     private gamesButton!: BitmapTextButton;
@@ -191,9 +192,12 @@ export default class HyperchipGame extends GameObject {
 
         this.mainMenuContainer.view.addChild(this.aboutButton.container)
         this.aboutButton.onClick.add(() => {
-            // if (this.stateMachine.currentState == (State.Standard)) {
-            //     this.menuCollapsed = !this.menuCollapsed
-            // }
+            this.aboutActive = !this.aboutActive
+            this.menuCollapsed = true
+            if (this.stateMachine.currentState == (State.SectionOpen)) {
+                this.stateMachine.setState(State.Standard)
+                this.closeCurrentSection()
+            }
         })
 
         this.gamesButton = this.poolComponent(BitmapTextButton, true, '     GAMES     ', 0xFFFFFF) as BitmapTextButton
@@ -207,6 +211,7 @@ export default class HyperchipGame extends GameObject {
             if (this.stateMachine.currentState == (State.Standard)) {
                 this.menuCollapsed = !this.menuCollapsed
             }
+            this.aboutActive = false;
         })
 
 
@@ -431,6 +436,8 @@ export default class HyperchipGame extends GameObject {
 
         this.gamesButton.setActive(!this.menuCollapsed)
 
+        this.aboutButton.setActive(!this.aboutActive)
+
         this.gameButtonsGo.x = MathUtils.lerp(this.gameButtonsGo.x, this.buttonsTargetPosition, 0.2)
 
 
@@ -496,8 +503,11 @@ export default class HyperchipGame extends GameObject {
             this.whiteOuter.view.tint = ColorUtils.interpolateGradient(this.gradient2, Math.sin(Loggie.Time * 0.5) * 0.5 + 0.5)
         }
         if (this.spaceTexture) {
-            this.spaceTexture.tilePosition.y += delta * 32;
-            this.spaceTexture.tilePosition.y %= 256;
+            this.spaceTexture.tilePosition.y += delta * 64;
+            this.spaceTexture.tilePosition.y %= 256 * 2;
+            this.spaceTexture.rotation += delta * 0.05
+            this.spaceTexture.rotation %= Math.PI * 2;
+            this.spaceTexture.scale.set(Math.cos(Loggie.Time) * 0.1 + 0.99, Math.sin(Loggie.Time) * 0.05 + 0.995);
         }
         if (this.spaceTexture2) {
             // this.spaceTexture2.tint = ColorUtils.interpolateGradient(this.gradient2, Math.sin(Loggie.Time * 0.5) * 0.5 + 0.5)

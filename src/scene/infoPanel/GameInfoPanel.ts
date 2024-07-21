@@ -98,6 +98,7 @@ export default class GameInfoPanel extends GameObject {
                 this.panelContainer.view.visible = false;
             }
         })
+        this.content.hide();
         this.currentSection = undefined;
     }
     showSection(gameData: GameData) {
