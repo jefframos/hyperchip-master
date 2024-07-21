@@ -30,7 +30,9 @@ export default class Footer extends PIXI.Container {
         this.addChild(this.playLogo)
         this.playLogo.anchor.set(1, 0.5)
 
+
         this.playLogo.cursor = 'pointer'
+
         InteractiveEventUtils.addClickTap(this.playLogo, () => {
             this.redirectToGame();
         })
@@ -48,6 +50,10 @@ export default class Footer extends PIXI.Container {
         } else if (gameData.publisher == 'GITHUB') {
             this.playLogo.texture = PIXI.Texture.from('play-git-hub')
         }
+        // this.playLogo.width = 500
+        // this.playLogo.height = 500
+
+
     }
     resize(width: number, height: number) {
         this.backShape.width = width

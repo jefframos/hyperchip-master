@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 import gsap, { Back } from 'gsap';
 
 import LoggieApplication from 'loggie/LoggieApplication';
+import Camera from 'loggie/core/camera/Camera';
 import GameObject from 'loggie/core/gameObject/GameObject';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import ScreenInfo from 'loggie/core/screen/ScreenInfo';
@@ -24,7 +25,7 @@ export default class GameInfoPanel extends GameObject {
     public panelShadow!: PIXI.NineSlicePlane;
     public panel!: PIXI.NineSlicePlane;
     public closeButton!: BitmapTextButton;
-    public currentSection!: GameData;
+    public currentSection!: GameData | undefined;
     public footer: Footer = new Footer();
     public header!: Header;
     public content: GameContent = new GameContent();
@@ -36,7 +37,7 @@ export default class GameInfoPanel extends GameObject {
     build() {
         super.build();
 
-        this.panelContainer = this.poolComponent(GameViewContainer, true, RenderLayers.FrontOverlayLayer)
+        this.panelContainer = this.poolComponent(GameViewContainer, true, RenderLayers.UILayerOverlay)
 
         this.panelShadow = new PIXI.NineSlicePlane(PIXI.Texture.from('panel-shadow'), 50, 50, 50, 50);
         this.panelShadow.width = 512 * 1.2
@@ -63,7 +64,6 @@ export default class GameInfoPanel extends GameObject {
         this.panelContainer.addChild(this.gameTexture)
 
 
-        this.panelContainer.addChild(this.footer)
         this.panelContainer.addChild(this.content)
 
 
@@ -79,6 +79,7 @@ export default class GameInfoPanel extends GameObject {
 
         this.header = new Header(this.closeButton);
         this.panelContainer.addChild(this.header)
+        this.panelContainer.addChild(this.footer)
 
     }
     setPanelColor(color: number) {
@@ -97,18 +98,19 @@ export default class GameInfoPanel extends GameObject {
                 this.panelContainer.view.visible = false;
             }
         })
+        this.currentSection = undefined;
     }
     showSection(gameData: GameData) {
         this.currentSection = gameData;
 
         this.footer.setData(gameData)
         this.header.setTitle(this.currentSection.title, this.currentSection.mainColor)
-        const tex: PIXI.Texture[] = [];
-        gameData.contentImage.forEach(element => {
-            tex.push(PIXI.Texture.from(element))
-        });
+        // const tex: PIXI.Texture[] = [];
+        // gameData.contentImage.forEach(element => {
+        //     tex.push(PIXI.Texture.from(element))
+        // });
         //this.content.setTexture([PIXI.Texture.from(gameData.mainThumb)])
-        this.content.setTexture(tex)
+        this.content.setTexture(PIXI.Texture.from(gameData.mainThumb), gameData.contentImage)
         this.content.setContentText(this.currentSection.contentText)
 
         //this.cloneMesh.setTexture(PIXI.Texture.from(gameData.mainThumb))
@@ -123,9 +125,10 @@ export default class GameInfoPanel extends GameObject {
         super.update(delta, unscaledTime);
 
         this.content.update(delta)
+        this.panelContainer.view.scale.set(Camera.Zoom)
         if (this.snapMesh) {
-            this.x = MathUtils.lerp(this.x, this.snapMesh.x, 0.2)
-            this.z = MathUtils.lerp(this.z, this.snapMesh.z, 0.2)
+            this.x = MathUtils.lerp(this.x, this.snapMesh.x + ScreenInfo.gameWidth / 2, 0.2)
+            this.z = MathUtils.lerp(this.z, this.snapMesh.z + ScreenInfo.gameHeight / 2, 0.2)
 
             // this.x = this.snapMesh.x
             // this.cloneMesh.x = this.snapMesh.x + ScreenInfo.gameWidth / 2

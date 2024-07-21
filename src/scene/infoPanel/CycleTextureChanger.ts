@@ -16,8 +16,8 @@ export default class CycleTextureChanger extends PIXI.Container {
 
         this.currentIndex = 0;
         this.elapsedTime = 0;
-        this.cycleDuration = cycleDuration; // convert to milliseconds
-        this.fadeDuration = fadeDuration; // convert to milliseconds
+        this.cycleDuration = cycleDuration;
+        this.fadeDuration = fadeDuration;
         this.fadingOut = false;
         this.fadeProgress = 0;
 
@@ -41,6 +41,8 @@ export default class CycleTextureChanger extends PIXI.Container {
         this.fadeProgress = 0;
         this.currentIndex = 0;
         this.elapsedTime = 0;
+
+
     }
 
     update(delta: number) {

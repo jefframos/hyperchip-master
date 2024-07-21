@@ -2,10 +2,10 @@ import ScreenInfo from 'loggie/core/screen/ScreenInfo';
 import MathUtils from 'loggie/utils/MathUtils';
 import ViewUtils from 'loggie/utils/ViewUtils';
 import * as PIXI from 'pixi.js';
-import CycleTextureChanger from './CycleTextureChanger';
+import CycleTextureChangerAsync from './CycleTextureChangerAsync';
 export default class GameContent extends PIXI.Container {
     private gameThumb: PIXI.Sprite;
-    private textureChanger: CycleTextureChanger = new CycleTextureChanger(3, 0.5);
+    private textureChanger: CycleTextureChangerAsync = new CycleTextureChangerAsync(3, 0.5);
     private video!: PIXI.Sprite;
     private videoElement!: HTMLVideoElement;
     private thumbMask: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
@@ -84,9 +84,12 @@ export default class GameContent extends PIXI.Container {
             this.videoElement.pause();
         }
     }
-    setTexture(texture: PIXI.Texture[]) {
-        this.gameThumb.texture = texture[0]
-        this.textureChanger.setTextures(texture)
+    setTexture(thumb: PIXI.Texture, textures: string[]) {
+        this.gameThumb.texture = thumb
+
+
+        this.textureChanger.setTextureURLs(textures)
+        //this.textureChanger.setTextures(texture)
     }
     setTitle(value: string, color: number) {
         this.title.text = value;
