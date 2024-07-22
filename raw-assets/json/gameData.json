@@ -27,7 +27,7 @@
             "mainColor": "0x6063A8",
             "secondaryColor": 6096809,
             "title": "MONSTER MERGE",
-            "contentText": "In Monster Merge, players embark on a magical journey through an ever-expanding castle. With each successful merge, new sections of the castle are unveiled, revealing hidden treasures and secrets.\n\nEngage with a variety of fantastical characters, including monsters, fairytale creatures, humans, and unicorns. Strategically combine these characters to unlock powerful upgrades and progress through the castle's enchanting levels. Discover the wonders that lie within as you merge your way to greatness in this captivating adventure.",
+            "contentText": "Embark on a journey through an ever-expanding castle. Merge your characters to unveil new sections of the castle and reveal hidden treasures. Monsters, fairytale creatures and unicorns unite to unlock powerful upgrades.",
             "contentImage": [
                 "./images/onDemand/mm1.png",
                 "./images/onDemand/mm2.png",
@@ -47,7 +47,7 @@
             "mainColor": "0xEF4DA1",
             "secondaryColor": 6096809,
             "title": "SPADERS",
-            "contentText": "In Spaders, players embark on a mindful puzzle adventure, guiding adorable creatures to clean the board and advance through increasingly challenging levels. Each puzzle solved unlocks new areas.\n\nStrategically direct your little helpers to clear the way and uncover hidden surprises as you progress. With each level, sharpen your problem-solving skills and immerse yourself in the tranquil yet engaging world of Spaders.",
+            "contentText": "A mindful puzzle adventure where your cute creatures clean the board to advance through increasingly challenging levels. Each puzzle solved unlocks new areas. \n\nWith each level, sharpen your problem-solving skills as you strategically direct your little helpers to clear the way and uncover new surprises,",
             "contentImage": [
                 "./images/onDemand/s2.png",
                 "./images/onDemand/s3.png",
@@ -102,12 +102,12 @@
             "mainColor": "0x734ED8",
             "secondaryColor": 6096809,
             "title": "BRICKS",
-            "contentText": "BRICKS is an innovative Tetris-inspired rogue-lite game that introduces a fresh twist to the classic puzzle gameplay. Every few turns, players encounter unique modifiers that alter the mechanics, creating a dynamic and challenging experience.\n\nNavigate through falling bricks while adapting to the ever-changing rules, combining strategy and quick thinking to progress and achieve high scores in this captivating and unpredictable adventure.",
+            "contentText": "BRICKS is an innovative Tetris-inspired rogue-lite game that introduces a fresh twist to the classic puzzle gameplay. Every few turns, players encounter unique modifiers that alter the mechanics, creating a dynamic and challenging experience.\n\nNavigate through falling bricks while adapting to the ever-changing rules, combining strategy and quick thinking to progress and achieve high scores.",
             "contentImage": [
-                "./images/onDemand/br1.jpg",
-                "./images/onDemand/br2.jpg",
-                "./images/onDemand/br3.jpg",
-                "./images/onDemand/br4.jpg"
+                "./images/onDemand/br1.png",
+                "./images/onDemand/br2.png",
+                "./images/onDemand/br3.png",
+                "./images/onDemand/br4.png"
             ],
             "video": "video.fmv",
             "playLink": "https://poki.com/en/g/bricks",

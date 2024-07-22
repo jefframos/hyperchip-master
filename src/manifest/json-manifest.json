@@ -4,6 +4,12 @@
       "name": "default",
       "assets": [
         {
+          "name": "about-data.json",
+          "srcs": [
+            "about-data.json"
+          ]
+        },
+        {
           "name": "animations/animation-set.json",
           "srcs": [
             "animations/animation-set.json"

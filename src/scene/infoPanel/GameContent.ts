@@ -34,7 +34,7 @@ export default class GameContent extends PIXI.Container {
         this.contentText.tint = 0x181a21
         this.contentText.resolution = 1
         this.gameThumb = PIXI.Sprite.from('pixijs-logo-transparent-dark')
-        //this.maskedContainer.addChild(this.gameThumb)
+        this.maskedContainer.addChild(this.gameThumb)
         this.maskedContainer.addChild(this.textureChanger)
         this.gameThumb.anchor.set(0, 0)
 
@@ -90,8 +90,6 @@ export default class GameContent extends PIXI.Container {
     }
     setTexture(thumb: PIXI.Texture, textures: string[]) {
         this.gameThumb.texture = thumb
-
-
         this.textureChanger.setTextureURLs(DataUtils.shuffleArray(textures))
         //this.textureChanger.setTextures(texture)
     }

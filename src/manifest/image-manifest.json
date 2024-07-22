@@ -83,9 +83,9 @@
       "name": "onDemand",
       "assets": [
         {
-          "name": "onDemand/br1.jpg",
+          "name": "onDemand/br1.png",
           "srcs": [
-            "onDemand/br1.jpg"
+            "onDemand/br1.png"
           ],
           "data": {
             "tags": {
@@ -94,9 +94,9 @@
           }
         },
         {
-          "name": "onDemand/br2.jpg",
+          "name": "onDemand/br2.png",
           "srcs": [
-            "onDemand/br2.jpg"
+            "onDemand/br2.png"
           ],
           "data": {
             "tags": {
@@ -105,9 +105,9 @@
           }
         },
         {
-          "name": "onDemand/br3.jpg",
+          "name": "onDemand/br3.png",
           "srcs": [
-            "onDemand/br3.jpg"
+            "onDemand/br3.png"
           ],
           "data": {
             "tags": {
@@ -116,9 +116,9 @@
           }
         },
         {
-          "name": "onDemand/br4.jpg",
+          "name": "onDemand/br4.png",
           "srcs": [
-            "onDemand/br4.jpg"
+            "onDemand/br4.png"
           ],
           "data": {
             "tags": {

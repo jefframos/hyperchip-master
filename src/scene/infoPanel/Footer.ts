@@ -5,17 +5,24 @@ import { GameData } from '../HyperchipGame';
 export default class Footer extends PIXI.Container {
     private pixiLogo: PIXI.Sprite;
     private playLogo: PIXI.Sprite;
-    private backShape: PIXI.Sprite;
+    private backShape: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
+    private gameLogo: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.WHITE)
     private madeWithText: PIXI.BitmapText;
     private currentGameData!: GameData;
     constructor() {
         super()
 
-        this.backShape = new PIXI.Sprite(PIXI.Texture.WHITE)
         this.addChild(this.backShape)
         this.backShape.tint = 0x181a21
         this.madeWithText = new PIXI.BitmapText('Made with ', { fontName: 'Poppins-Light', fontSize: 24 });
         this.addChild(this.madeWithText)
+        this.addChild(this.gameLogo)
+
+        this.gameLogo.cursor = 'pointer'
+
+        InteractiveEventUtils.addClickTap(this.gameLogo, () => {
+            this.redirectToGame();
+        })
 
         this.pixiLogo = PIXI.Sprite.from('pixijs-logo-transparent-dark')
         this.addChild(this.pixiLogo)
@@ -42,6 +49,9 @@ export default class Footer extends PIXI.Container {
     redirectToGame() {
         window.open(this.currentGameData.playLink, '_blank');
     }
+    setLogo(texture: PIXI.Texture) {
+        this.gameLogo.texture = texture;
+    }
     setData(gameData: GameData) {
         this.currentGameData = gameData;
 
@@ -58,20 +68,23 @@ export default class Footer extends PIXI.Container {
     resize(width: number, height: number) {
         this.backShape.width = width
         this.backShape.height = height
-
-        this.madeWithText.x = 40
-        this.madeWithText.y = this.backShape.height / 2 - this.madeWithText.height / 2
-
-        this.pixiLogo.x = this.madeWithText.x + this.madeWithText.width + 10
-        this.pixiLogo.y = height / 2
-
-        this.pixiLogo.scale.set(ViewUtils.elementScaler(this.pixiLogo, 1000, height * 0.35))
-
+        this.gameLogo.scale.set(ViewUtils.elementScaler(this.gameLogo, 1000, height - 20))
+        this.gameLogo.x = 10
+        this.gameLogo.y = 10
 
         this.playLogo.x = width - 30
         this.playLogo.y = height / 2
 
         this.playLogo.scale.set(ViewUtils.elementScaler(this.playLogo, 1000, height * 0.5))
+
+        this.pixiLogo.scale.set(ViewUtils.elementScaler(this.pixiLogo, 1000, height * 0.35))
+
+        this.madeWithText.x = Math.min(width / 2 - this.pixiLogo.width / 2, this.playLogo.x - this.playLogo.width - this.pixiLogo.width - 20) //Math.min(width / 2, this.playLogo.x - this.playLogo.width + 20)
+        this.madeWithText.y = height / 2 - 60
+
+        this.pixiLogo.x = this.madeWithText.x
+        this.pixiLogo.y = height / 2 + 20
+
 
     }
 

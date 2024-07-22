@@ -1,10 +1,12 @@
 import gsap from "gsap";
 import LoggieApplication from "loggie/LoggieApplication";
+import Loggie from "loggie/core/Loggie";
 import { RenderLayers } from "loggie/core/render/RenderLayers";
 import GameViewContainer from "loggie/core/view/GameViewContainer";
 import GameViewSprite from "loggie/core/view/GameViewSprite";
 import SceneLoaderView from "loggie/scene/SceneLoaderView";
 import MathUtils from "loggie/utils/MathUtils";
+import ColorUtils from "loggie/utils/color/ColorUtils";
 import * as PIXI from 'pixi.js';
 import TopRopes from "./TopRopes";
 
@@ -12,6 +14,7 @@ export default class HyperLoader extends SceneLoaderView {
     private rope?: TopRopes;
     private currentProgress: number = 0
     public blocker!: GameViewSprite;
+    public destroying: boolean = false;
 
     constructor() {
         super()
@@ -62,23 +65,27 @@ export default class HyperLoader extends SceneLoaderView {
             const targetLength = (this.loggie.overlay.down + 300) * this.currentProgress
             this.rope.x = this.loggie.overlay.halfWidth
             this.rope.currentLength = MathUtils.lerp(this.rope.currentLength, Math.max(300, targetLength), 0.1)
-            console.log(this.currentProgress)
-            this.blocker.view.tint = this.rope.rope.tint
+            this.blocker.view.tint = ColorUtils.interpolateGradient([{ color: 0x66A6FF, position: 0 }, { color: 0xF65EE8, position: 1 }], Math.sin(Loggie.Time * 2) * 0.5 + 0.5)
+
+            if (this.destroying) {
+                this.rope.straighten()
+            }
         }
 
     }
     destroy(): void {
-        gsap.to(this.blocker.view, {
-            alpha: 1, duration: 0.5, delay: 0.25, onComplete: () => {
-                this.rope?.destroy();
-                this.rope = undefined;
-                gsap.to(this.blocker.view, {
-                    alpha: 0, duration: 0.5, onComplete: () => {
-                        super.destroy();
-                    }
-                })
+        this.destroying = true
+
+        this.blocker.view.alpha = 1
+        this.blocker.view.scale.x = 0
+        gsap.to(this.blocker.view.scale, {
+            duration: 0.75, x: 200, onComplete: () => {
+                super.destroy();
             }
-        })
+        });
+
+        this.rope?.destroy();
+        this.rope = undefined;
 
     }
 }

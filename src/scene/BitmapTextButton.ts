@@ -41,7 +41,7 @@ export default class BitmapTextButton extends BaseComponent {
         this.bitmapText2 = new PIXI.BitmapText(text, { fontName: 'Poppins-Black', fontSize: 72 });
         this.container.addChild(this.bitmapText2)
         this.bitmapText2.tint = 0
-        this.bitmapText2.alpha = 0.2
+        this.bitmapText2.alpha = 0.25
 
         this.bitmapText = new PIXI.BitmapText(text, { fontName: 'Poppins-Black', fontSize: 72 });
         this.container.addChild(this.bitmapText)

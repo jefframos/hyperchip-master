@@ -1,0 +1,22 @@
+{
+    "people": [
+        {
+            "name": "Jeff Ramos",
+            "role": "Dev",
+            "mainColor": "0xFF0000",
+            "description": "Lorem Ipsum is simply dummyy text ever since the 1500s, when an unknown printer took a galley ofvived not only five centurypesetting, remaining essentially unchanged. It was popularised in the 1960s",
+            "portrait": "potato1",
+            "linkedin": "lll",
+            "portfolio": "lll"
+        },
+        {
+            "name": "Josie Pringles",
+            "role": "UX Designer",
+            "mainColor": "0xFF00ff",
+            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+            "portrait": "potato1",
+            "linkedin": "lll",
+            "portfolio": "lll"
+        }
+    ]
+}

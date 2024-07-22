@@ -21,6 +21,7 @@ import Ease from 'loggie/utils/tween2/Ease';
 import { EaseFunction } from 'loggie/utils/tween2/Tweener';
 import BitmapTextButton from './BitmapTextButton';
 import MeshGrid from './MeshGrid';
+import AboutPanel from './infoPanel/AboutPanel';
 import GameInfoPanel from './infoPanel/GameInfoPanel';
 
 export interface GameData {
@@ -44,10 +45,12 @@ export default class HyperchipGame extends GameObject {
     private logo!: GameViewSprite;
     private topVignette!: GameViewSprite;
     private leftVignette!: GameViewSprite;
+    private eclipse!: GameViewSprite;
     private whiteOuter!: GameViewSprite;
     private whiteIntro!: GameViewSprite;
     private flatBackground!: GameViewSprite;
     private gameInfoPanel!: GameInfoPanel;
+    private aboutPanel!: AboutPanel;
     private meshGrid!: MeshGrid;
     private targetBackgroundAlpha: number = 0.35
     private buttonsTargetPosition: number = 0
@@ -68,7 +71,7 @@ export default class HyperchipGame extends GameObject {
 
     private perspCamera!: PerspectiveCamera;
     private menuCollapsed: boolean = true;
-    private aboutActive: boolean = true;
+    private aboutActive: boolean = false;
     private activeButton!: BitmapTextButton;
     private aboutButton!: BitmapTextButton;
     private gamesButton!: BitmapTextButton;
@@ -76,6 +79,7 @@ export default class HyperchipGame extends GameObject {
 
     private gradient1: ColorStop[] = []
     private gradient2: ColorStop[] = []
+    private gradient3: ColorStop[] = []
     private gradientFlat: ColorStop[] = []
 
 
@@ -119,6 +123,17 @@ export default class HyperchipGame extends GameObject {
                 position: 1
             }
         )
+
+        this.gradient3.push(
+            {
+                color: 0x5d0ba9,
+                position: 0
+            },
+            {
+                color: 0x68e0cf,
+                position: 1
+            }
+        )
     }
     build() {
         super.build();
@@ -142,11 +157,18 @@ export default class HyperchipGame extends GameObject {
         // this.spaceTexture2.height = 15000
 
         //const ropes = this.poolGameObject(TopRopes, true);
+
+
         this.flatBackground = GameViewUtils.makeSprite(this, PIXI.Texture.WHITE, RenderLayers.BaseB).findComponent<GameViewSprite>(GameViewSprite)
         this.flatBackground.ignoreCameraPerspective = true;
         this.flatBackground.ignoreCameraScale = true;
         this.flatBackground.view.anchor.set(0.5)
 
+        this.eclipse = GameViewUtils.makeSprite(this, PIXI.Texture.from('eclipse'), RenderLayers.Base).findComponent<GameViewSprite>(GameViewSprite)
+        this.eclipse.ignoreCameraPerspective = true;
+        this.eclipse.ignoreCameraScale = true;
+        this.eclipse.view.scale.set(ViewUtils.elementScaler(this.eclipse.view, 1280))
+        this.eclipse.view.anchor.set(0.5)
 
         this.whiteIntro = GameViewUtils.makeSprite(this, PIXI.Texture.from('white-top-1'), RenderLayers.FrontLayer).findComponent<GameViewSprite>(GameViewSprite)
         this.whiteIntro.ignoreCameraPerspective = true;
@@ -174,10 +196,11 @@ export default class HyperchipGame extends GameObject {
         this.logo.customZIndex = 100
 
         InteractiveEventUtils.addClickTap(this.logo.view, () => {
+            this.closeAbout()
             if (this.stateMachine.currentState == (State.Standard)) {
                 this.menuCollapsed = !this.menuCollapsed
             } else if (this.stateMachine.currentState == (State.SectionOpen)) {
-                this.stateMachine.setState(State.Standard)
+                this.toStandardState()
                 this.closeCurrentSection()
             }
         })
@@ -192,12 +215,9 @@ export default class HyperchipGame extends GameObject {
 
         this.mainMenuContainer.view.addChild(this.aboutButton.container)
         this.aboutButton.onClick.add(() => {
-            this.aboutActive = !this.aboutActive
+            // this.aboutActive = !this.aboutActive
             this.menuCollapsed = true
-            if (this.stateMachine.currentState == (State.SectionOpen)) {
-                this.stateMachine.setState(State.Standard)
-                this.closeCurrentSection()
-            }
+            this.handleAbout();
         })
 
         this.gamesButton = this.poolComponent(BitmapTextButton, true, '     GAMES     ', 0xFFFFFF) as BitmapTextButton
@@ -208,10 +228,14 @@ export default class HyperchipGame extends GameObject {
         this.mainMenuContainer.view.addChild(this.gamesButton.container)
         this.gamesButton.container.y = 100
         this.gamesButton.onClick.add(() => {
+
+            this.closeAbout()
+            this.toStandardState()
             if (this.stateMachine.currentState == (State.Standard)) {
                 this.menuCollapsed = !this.menuCollapsed
+            } else {
             }
-            this.aboutActive = false;
+
         })
 
 
@@ -251,10 +275,13 @@ export default class HyperchipGame extends GameObject {
             if (LoggieApplication.debugParams.redirect) {
                 const targetMesh = this.meshGrid.moveToId(gameDataList.games[0].id);
                 if (targetMesh) {
-                    this.stateMachine.setState(State.SectionOpen)
+                    this.toOpenState();
                     this.gameInfoPanel.snapToMesh(targetMesh)
                     this.gameInfoPanel.showSection(gameDataList.games[0])
                 }
+            }
+            if (LoggieApplication.debugParams.about) {
+                this.showAbout();
             }
         }, 100);
         this.meshGrid = this.poolGameObject(MeshGrid, true, this.gameDataMap)
@@ -263,7 +290,7 @@ export default class HyperchipGame extends GameObject {
             if (this.stateMachine.currentState == (State.Standard)) {
                 const targetMesh = this.meshGrid.moveToId(tileId);
                 if (targetMesh) {
-                    this.stateMachine.setState(State.SectionOpen)
+                    this.toOpenState();
                     this.gameInfoPanel.snapToMesh(targetMesh)
                     this.gameInfoPanel.showSection(this.gameDataMap.get(tileId))
                 }
@@ -281,12 +308,20 @@ export default class HyperchipGame extends GameObject {
         this.text.text = ''
         this.debug.x = 300
         this.mapCenter = this.poolGameObject(GameObject, true);
+
+
         this.gameInfoPanel = this.poolGameObject(GameInfoPanel, true);
         this.gameInfoPanel.onHidePanel.add(() => {
             if (this.stateMachine.currentState == (State.SectionOpen)) {
-                this.stateMachine.setState(State.Standard)
+                this.toStandardState()
                 this.closeCurrentSection()
             }
+        })
+
+        this.aboutPanel = this.poolGameObject(AboutPanel, true);
+        this.aboutPanel.onHidePanel.add(() => {
+            this.closeAbout()
+            this.toStandardState()
         })
 
         this.mapCenter = this.poolGameObject(GameObject, true);
@@ -308,17 +343,53 @@ export default class HyperchipGame extends GameObject {
 
     }
     async closeAndOpen(section: GameData) {
-        this.stateMachine.setState(State.Standard)
+        this.toStandardState()
         this.closeCurrentSection()
         await PromiseUtils.await(750)
         this.openSection(section)
     }
+    closeAbout() {
+        this.aboutPanel.hideSection()
+        this.aboutActive = false;
+    }
+    showAbout() {
+        this.toOpenState();
+        this.aboutPanel.showSection()
+        this.aboutActive = true;
+    }
+    handleAbout() {
+        if (this.stateMachine.currentState == (State.SectionOpen)) {
+            this.toStandardState()
+            this.closeCurrentSection()
+        }
+        if (this.aboutActive) {
+            this.closeAbout();
+            this.toStandardState()
+
+        } else {
+            this.showAbout();
+        }
+
+    }
+    toOpenState() {
+        this.eclipse.view.alpha = 0
+        this.stateMachine.setState(State.SectionOpen)
+    }
+    toStandardState() {
+        this.stateMachine.setState(State.Standard)
+        gsap.killTweensOf(this.eclipse.view.scale)
+        this.eclipse.view.alpha = 1
+        this.eclipse.view.scale.set(ViewUtils.elementScaler(this.eclipse.view, 1280))
+        gsap.from(this.eclipse.view.scale, { x: 0, y: 0, duration: 1.2, delay: 0.5 })
+    }
     openSection(section: GameData) {
         const targetMesh = this.meshGrid.moveToId(section.id);
         if (targetMesh) {
-            this.stateMachine.setState(State.SectionOpen)
+            this.closeAbout()
+            this.toOpenState();
             this.gameInfoPanel.snapToMesh(targetMesh)
             this.gameInfoPanel.showSection(section)
+
         }
     }
     closeCurrentSection() {
@@ -400,7 +471,7 @@ export default class HyperchipGame extends GameObject {
             }
         } else if (this.stateMachine.currentState == State.SectionOpen) {
             this.mapCenter.y = MathUtils.lerp(this.mapCenter.y, 0, 0.1)
-            this.targetBackgroundAlpha = MathUtils.lerp(this.targetBackgroundAlpha, 0.65, 0.1)
+            this.targetBackgroundAlpha = MathUtils.lerp(this.targetBackgroundAlpha, 0.55, 0.1)
             if (this.loggie.overlay.isPortrait) {
                 if (PIXI.isMobile.any) {
                     this.mainMenuContainer.gameObject.x = this.loggie.overlay.right + 50
@@ -421,6 +492,9 @@ export default class HyperchipGame extends GameObject {
 
         this.perspCamera.setFollowPoint(this.mapCenter.transform.position)
 
+        this.eclipse.gameObject.transform.position.copy(this.mapCenter.transform.position)
+
+        console.log(this.menuCollapsed)
         if (this.menuCollapsed) {
             if (PIXI.isMobile.any && this.loggie.overlay.isPortrait) {
                 this.buttonsTargetPosition = this.loggie.overlay.right + 50
@@ -436,7 +510,8 @@ export default class HyperchipGame extends GameObject {
 
         this.gamesButton.setActive(!this.menuCollapsed)
 
-        this.aboutButton.setActive(!this.aboutActive)
+        //console.log(this.aboutActive)
+        this.aboutButton.setActive(this.aboutActive)
 
         this.gameButtonsGo.x = MathUtils.lerp(this.gameButtonsGo.x, this.buttonsTargetPosition, 0.2)
 
@@ -501,6 +576,9 @@ export default class HyperchipGame extends GameObject {
             this.whiteOuter.gameObject.x = this.perspCamera.cameraViewBounds.center.x
             this.whiteOuter.gameObject.z = this.perspCamera.cameraViewBounds.center.y
             this.whiteOuter.view.tint = ColorUtils.interpolateGradient(this.gradient2, Math.sin(Loggie.Time * 0.5) * 0.5 + 0.5)
+        }
+        if (this.eclipse) {
+            this.eclipse.view.tint = ColorUtils.interpolateGradient(this.gradient3, Math.sin(Loggie.Time * 0.5) * 0.5 + 0.5)
         }
         if (this.spaceTexture) {
             this.spaceTexture.tilePosition.y += delta * 64;

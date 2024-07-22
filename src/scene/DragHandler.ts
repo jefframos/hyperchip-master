@@ -61,7 +61,7 @@ export default class DragHandler {
                 this.waitingCheck = true;
                 this.startDragTimeout = setTimeout(() => {
                     this.isMoving = true;
-                }, 150);
+                }, 25);
             }
         }
     }

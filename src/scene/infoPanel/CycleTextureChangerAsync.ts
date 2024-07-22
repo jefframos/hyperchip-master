@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import { Assets, Container, Sprite, Texture } from 'pixi.js';
 
 export default class CycleTextureChangerAsync extends Container {
@@ -37,6 +38,8 @@ export default class CycleTextureChangerAsync extends Container {
     async setTextureURLs(urls: string[]) {
         this.textures = [];
 
+        this.transitionSprite.alpha = 0;
+        this.currentSprite.alpha = 0;
         for (const url of urls) {
             const texture = await Assets.load(url);
             this.textures.push(texture);
@@ -44,6 +47,8 @@ export default class CycleTextureChangerAsync extends Container {
 
         this.currentSprite.texture = this.textures[0];
         this.fadingOut = false;
+        gsap.killTweensOf(this.currentSprite)
+        gsap.to(this.currentSprite, { alpha: 1, duration: 0.5 })
         this.fadeProgress = 0;
         this.currentIndex = 0;
         this.elapsedTime = 0;

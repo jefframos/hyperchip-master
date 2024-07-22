@@ -105,21 +105,16 @@ export default class GameInfoPanel extends GameObject {
         this.currentSection = gameData;
 
         this.footer.setData(gameData)
+        this.footer.setLogo(PIXI.Texture.from(gameData.mainThumb))
         this.header.setTitle(this.currentSection.title, this.currentSection.mainColor)
-        // const tex: PIXI.Texture[] = [];
-        // gameData.contentImage.forEach(element => {
-        //     tex.push(PIXI.Texture.from(element))
-        // });
-        //this.content.setTexture([PIXI.Texture.from(gameData.mainThumb)])
         this.content.setTexture(PIXI.Texture.from(gameData.mainThumb), gameData.contentImage)
         this.content.setContentText(this.currentSection.contentText)
 
-        //this.cloneMesh.setTexture(PIXI.Texture.from(gameData.mainThumb))
         gsap.killTweensOf(this.panelContainer.view)
         gsap.killTweensOf(this.panelContainer.view.scale)
         this.panelContainer.view.visible = true;
         this.panelContainer.view.alpha = 0
-        gsap.to(this.panelContainer.view, { duration: 0.25, alpha: 1, delay: 0.85 })
+        gsap.to(this.panelContainer.view, { duration: 0.25, alpha: 1, delay: 0.085 })
         gsap.to(this.panelContainer.view.scale, { duration: 0.8, x: 1.5, y: 1.5, delay: 0.5, ease: Back.easeOut })
     }
     update(delta: number, unscaledTime: number) {

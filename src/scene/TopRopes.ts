@@ -2,6 +2,7 @@ import Loggie from 'loggie/core/Loggie';
 import GameObject from 'loggie/core/gameObject/GameObject';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
+import MathUtils from 'loggie/utils/MathUtils';
 import ColorUtils from 'loggie/utils/color/ColorUtils';
 import * as PIXI from 'pixi.js';
 export default class TopRopes extends GameObject {
@@ -10,6 +11,7 @@ export default class TopRopes extends GameObject {
     private baseLength: number = 50
     public currentLength: number = 50
     private rope!: PIXI.SimpleRope
+    private isStraight: boolean = false;
     constructor() {
         super()
     }
@@ -35,6 +37,10 @@ export default class TopRopes extends GameObject {
 
 
     }
+
+    straighten() {
+        this.isStraight = true;
+    }
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
 
@@ -45,7 +51,13 @@ export default class TopRopes extends GameObject {
 
         const l = this.currentLength / this.points.length / this.rope.scale.x
         for (let i = 0; i < this.points.length; i++) {
-            this.points[i].x = Math.sin((i * 0.5) + (Loggie.Time * 8)) * Math.max(50, Math.min(120, 800 - this.currentLength));
+            if (this.isStraight) {
+
+                this.points[i].x = MathUtils.lerp(this.points[i].x, 0, 0.2) //Math.sin((i * 0.5) + (Loggie.Time * 8)) * Math.max(50, Math.min(120, 800 - this.currentLength));
+            } else {
+
+                this.points[i].x = Math.sin((i * 0.5) + (Loggie.Time * 8)) * Math.max(50, Math.min(120, 800 - this.currentLength));
+            }
             this.points[i].y = i * l + l / 2;
         }
 
