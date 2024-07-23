@@ -79,16 +79,16 @@ export default class MeshGrid extends GameObject {
 
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
-        const normalizedDeltaTime = delta * 60;
+        const normalizedDeltaTime = delta * 60 * 50;
         const dragVelocity = this.dragHandler.getVelocity()
 
         this.blocker.view.visible = this.dragHandler.isMoving
 
         if (this.state === MeshGridState.IDLE && !this.locked) {
-            const speed = PIXI.isMobile.any ? 20 : 2;
-            this.setOffset(dragVelocity, speed / normalizedDeltaTime);
+            const speed = (1 / delta / 60) * 2//PIXI.isMobile.any ? 20 : 2;
+            this.setOffset(dragVelocity, normalizedDeltaTime);
         } else if (this.state === MeshGridState.TRANSITIONING) {
-            this.updateTransition(normalizedDeltaTime);
+            this.updateTransition(delta * 60);
         }
     }
 

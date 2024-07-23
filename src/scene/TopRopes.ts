@@ -3,7 +3,6 @@ import GameObject from 'loggie/core/gameObject/GameObject';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import MathUtils from 'loggie/utils/MathUtils';
-import ColorUtils from 'loggie/utils/color/ColorUtils';
 import * as PIXI from 'pixi.js';
 export default class TopRopes extends GameObject {
     private topContainer!: GameViewContainer;
@@ -45,7 +44,7 @@ export default class TopRopes extends GameObject {
         super.update(delta, unscaledTime);
 
 
-        this.rope.tint = ColorUtils.interpolateGradient([{ color: 0x66A6FF, position: 0 }, { color: 0xF65EE8, position: 1 }], Math.sin(Loggie.Time * 2) * 0.5 + 0.5)
+        this.rope.tint = 0xF65EE8//ColorUtils.interpolateGradient([{ color: 0x66A6FF, position: 0 }, { color: 0xF65EE8, position: 1 }], Math.sin(Loggie.Time * 2) * 0.5 + 0.5)
 
         //this.currentLength = this.loggie.overlay.right / 20 / this.rope.scale.x//this.baseLength + Math.cos((Loggie.Time * 5)) * 30
 

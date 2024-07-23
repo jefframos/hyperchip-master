@@ -2,21 +2,21 @@
     "people": [
         {
             "name": "Jeff Ramos",
-            "role": "Dev",
-            "mainColor": "0xFF0000",
-            "description": "Lorem Ipsum is simply dummyy text ever since the 1500s, when an unknown printer took a galley ofvived not only five centurypesetting, remaining essentially unchanged. It was popularised in the 1960s",
-            "portrait": "potato1",
-            "linkedin": "lll",
-            "portfolio": "lll"
+            "role": "Principal Developer",
+            "mainColor": "0xF45BED",
+            "description": "Jeff hails from Porto Alegre, Brazil and has over 17 years experience in game development using a wide range of technologies.\n\nPassionate about game feel and user experience, Jeff started Hyperchip as a way of continuing his mission to always create and always bring something new to the table.",
+            "portrait": "jeff",
+            "linkedin": "https://www.linkedin.com/in/jeffersonr/",
+            "portfolio": "https://jefframos.me/"
         },
         {
-            "name": "Josie Pringles",
+            "name": "Josie Prebble",
             "role": "UX Designer",
-            "mainColor": "0xFF00ff",
-            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-            "portrait": "potato1",
-            "linkedin": "lll",
-            "portfolio": "lll"
+            "mainColor": "0x209CFF",
+            "description": "Josie has previously worked as a musician and educator and has recently moved to UX Design as a way of continuing to grow her artistic skills while utilising her knowledge of human behaviour to create fun and engaging experiences.",
+            "portrait": "josie",
+            "linkedin": "https://www.linkedin.com/in/josie-prebble-b7933716a/",
+            "portfolio": ""
         }
     ]
 }

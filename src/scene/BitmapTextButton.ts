@@ -1,6 +1,7 @@
 import BaseComponent from 'loggie/core/gameObject/BaseComponent';
 import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
 import MathUtils from 'loggie/utils/MathUtils';
+import ViewUtils from 'loggie/utils/ViewUtils';
 import * as PIXI from 'pixi.js';
 import { Signal } from 'signals';
 export default class BitmapTextButton extends BaseComponent {
@@ -13,6 +14,7 @@ export default class BitmapTextButton extends BaseComponent {
     private hiddenShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private backShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
     private maskShape: PIXI.Sprite = PIXI.Sprite.from(PIXI.Texture.WHITE)
+    private icon!: PIXI.Sprite
     private mouseOver: boolean = false
     private isActive: boolean = false
     public shapeOffset: PIXI.Point = new PIXI.Point()
@@ -76,6 +78,27 @@ export default class BitmapTextButton extends BaseComponent {
         this.shapeOffset.y = 15
 
         this.backShape.width = 0
+    }
+    addIcon(texture: PIXI.Texture) {
+        this.icon = new PIXI.Sprite(texture)
+        this.container.addChild(this.icon)
+        this.icon.anchor.y = 0.5
+        this.icon.scale.set(ViewUtils.elementScaler(this.icon, this.backShape.height - 30))
+        this.icon.y = this.backShape.height / 2 + 15
+
+        this.icon.x = this.bitmapText.width - this.icon.width
+    }
+    iconOnRight() {
+
+        this.icon.x = 0
+    }
+    iconOnLeft() {
+        this.icon.x = this.bitmapText.width - this.icon.width
+
+    }
+    updateText(text: string) {
+        this.bitmapText.text = text
+        this.bitmapText2.text = text
     }
     addShadow() {
         this.container.addChildAt(this.shadow, 0)

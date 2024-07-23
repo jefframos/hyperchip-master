@@ -128,12 +128,12 @@ export default class AboutPanel extends GameObject {
 
             if (PIXI.isMobile.any || LoggieApplication.debugParams.forceMobile) {
                 this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
-                this.panel.height = Math.max(800, ScreenInfo.gameHeight * 0.8)
+                this.panel.height = Math.max(900, ScreenInfo.gameHeight * 0.9)
                 this.panel.x = -this.panel.width / 2
-                this.panel.y = -this.panel.height / 2 + 100
+                this.panel.y = -this.panel.height / 2
             } else {
                 this.panel.width = Math.max(512 * 1.2, ScreenInfo.gameWidth * 0.9)
-                this.panel.height = Math.max(800, ScreenInfo.gameHeight * 0.6)
+                this.panel.height = Math.max(800, ScreenInfo.gameHeight * 0.9)
                 this.panel.x = -this.panel.width / 2
                 this.panel.y = -this.panel.height / 2
             }

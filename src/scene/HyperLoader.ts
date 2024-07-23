@@ -1,12 +1,11 @@
 import gsap from "gsap";
 import LoggieApplication from "loggie/LoggieApplication";
-import Loggie from "loggie/core/Loggie";
 import { RenderLayers } from "loggie/core/render/RenderLayers";
 import GameViewContainer from "loggie/core/view/GameViewContainer";
 import GameViewSprite from "loggie/core/view/GameViewSprite";
+import GameViewUtils from "loggie/core/view/GameViewUtils";
 import SceneLoaderView from "loggie/scene/SceneLoaderView";
 import MathUtils from "loggie/utils/MathUtils";
-import ColorUtils from "loggie/utils/color/ColorUtils";
 import * as PIXI from 'pixi.js';
 import TopRopes from "./TopRopes";
 
@@ -15,6 +14,12 @@ export default class HyperLoader extends SceneLoaderView {
     private currentProgress: number = 0
     public blocker!: GameViewSprite;
     public destroying: boolean = false;
+    public exiting: boolean = false;
+
+
+    private shapeBlockerLeft!: GameViewSprite;
+
+
 
     constructor() {
         super()
@@ -60,32 +65,55 @@ export default class HyperLoader extends SceneLoaderView {
         this.x = this.loggie.overlay.halfWidth
         this.z = this.loggie.overlay.down - 100
 
+        if (this.exiting) {
+            if (this.shapeBlockerLeft) {
+                this.shapeBlockerLeft.view.width = this.loggie.overlay.right + 150
+                this.shapeBlockerLeft.view.height = this.loggie.overlay.down + 500
+
+
+                this.shapeBlockerLeft.view.alpha = MathUtils.lerp(this.shapeBlockerLeft.view.alpha, 0, 0.02)
+
+            }
+        }
         if (this.rope) {
             this.rope.y = -150
             const targetLength = (this.loggie.overlay.down + 300) * this.currentProgress
             this.rope.x = this.loggie.overlay.halfWidth
             this.rope.currentLength = MathUtils.lerp(this.rope.currentLength, Math.max(300, targetLength), 0.1)
-            this.blocker.view.tint = ColorUtils.interpolateGradient([{ color: 0x66A6FF, position: 0 }, { color: 0xF65EE8, position: 1 }], Math.sin(Loggie.Time * 2) * 0.5 + 0.5)
+            this.blocker.view.tint = 0xF65EE8//ColorUtils.interpolateGradient([{ color: 0x66A6FF, position: 0 }, { color: 0xF65EE8, position: 1 }], Math.sin(Loggie.Time * 2) * 0.5 + 0.5)
 
             if (this.destroying) {
                 this.rope.straighten()
             }
         }
-
     }
     destroy(): void {
         this.destroying = true
-
         this.blocker.view.alpha = 1
         this.blocker.view.scale.x = 0
+
         gsap.to(this.blocker.view.scale, {
-            duration: 0.75, x: 200, onComplete: () => {
-                super.destroy();
+            delay: 0.5, duration: 0.3, x: 200, onComplete: () => {
+                this.exit()
+                setTimeout(() => {
+                    super.destroy();
+                }, 5000);
             }
         });
 
+    }
+    exit() {
+        this.exiting = true;
         this.rope?.destroy();
         this.rope = undefined;
+        this.blocker.view.alpha = 0
+
+        this.shapeBlockerLeft = GameViewUtils.makeSprite(this, PIXI.Texture.WHITE, RenderLayers.UILayerOverlay).findComponent<GameViewSprite>(GameViewSprite)
+        this.shapeBlockerLeft.customZIndex = 1000000
+        this.shapeBlockerLeft.view.tint = 0xF65EE8;
+        this.shapeBlockerLeft.gameObject.x = 0
+
+
 
     }
 }
