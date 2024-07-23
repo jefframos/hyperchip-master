@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
 
-import ScreenInfo from 'loggie/core/screen/ScreenInfo';
+import CycleTextureChangerAsync from './CycleTextureChangerAsync';
 import DataUtils from 'loggie/utils/DataUtils';
 import MathUtils from 'loggie/utils/MathUtils';
+import ScreenInfo from 'loggie/core/screen/ScreenInfo';
 import ViewUtils from 'loggie/utils/ViewUtils';
-import CycleTextureChangerAsync from './CycleTextureChangerAsync';
 
 export default class GameContent extends PIXI.Container {
     private gameThumb: PIXI.Sprite;

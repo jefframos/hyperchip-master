@@ -1,7 +1,9 @@
+import * as PIXI from 'pixi.js';
+
+import { GameData } from '../HyperchipGame';
 import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
 import ViewUtils from 'loggie/utils/ViewUtils';
-import * as PIXI from 'pixi.js';
-import { GameData } from '../HyperchipGame';
+
 export default class Footer extends PIXI.Container {
     private pixiLogo: PIXI.Sprite;
     private playLogo: PIXI.Sprite;
@@ -48,6 +50,11 @@ export default class Footer extends PIXI.Container {
     }
     redirectToGame() {
         window.open(this.currentGameData.playLink, '_blank');
+
+        gtag('event', 'redirect_game', {
+            'event_category': 'button',
+            'event_label': this.currentGameData.id
+          });
     }
     setLogo(texture: PIXI.Texture) {
         this.gameLogo.texture = texture;

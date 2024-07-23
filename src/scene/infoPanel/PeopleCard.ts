@@ -1,7 +1,9 @@
-import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
-import ViewUtils from 'loggie/utils/ViewUtils';
 import * as PIXI from 'pixi.js';
+
+import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
 import { PeopleData } from './AboutPanel';
+import ViewUtils from 'loggie/utils/ViewUtils';
+
 export default class PeopleCard extends PIXI.Container {
 
     private linkedn: PIXI.Sprite;
@@ -42,12 +44,18 @@ export default class PeopleCard extends PIXI.Container {
 
         InteractiveEventUtils.addClickTap(this.linkedn, () => {
             window.open(peopleData.linkedin, '_blank');
+            gtag('event', 'redirect_linkedn', {
+                'event_category': 'button',
+                'event_label': peopleData.id
+              });
             //this.redirectToGame();
         })
 
 
         this.portfolio = PIXI.Sprite.from('portfolio-bt')
-        this.addChild(this.portfolio)
+        if(peopleData.portfolio != ''){
+            this.addChild(this.portfolio)
+        }
         this.portfolio.anchor.set(1, 0.5)
 
 
@@ -55,6 +63,12 @@ export default class PeopleCard extends PIXI.Container {
 
         InteractiveEventUtils.addClickTap(this.portfolio, () => {
             //this.redirectToGame();
+            window.open(peopleData.portfolio, '_blank');
+
+            gtag('event', 'redirect_portfolio', {
+                'event_category': 'button',
+                'event_label': peopleData.id
+              });
         })
     }
     build() {

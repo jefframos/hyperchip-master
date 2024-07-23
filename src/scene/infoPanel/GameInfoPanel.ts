@@ -2,20 +2,20 @@ import * as PIXI from 'pixi.js';
 
 import gsap, { Back } from 'gsap';
 
-import LoggieApplication from 'loggie/LoggieApplication';
-import Camera from 'loggie/core/camera/Camera';
-import GameObject from 'loggie/core/gameObject/GameObject';
-import { RenderLayers } from 'loggie/core/render/RenderLayers';
-import ScreenInfo from 'loggie/core/screen/ScreenInfo';
-import GameViewContainer from 'loggie/core/view/GameViewContainer';
-import MathUtils from 'loggie/utils/MathUtils';
-import { Signal } from 'signals';
 import BitmapTextButton from '../BitmapTextButton';
-import { GameData } from '../HyperchipGame';
-import MainTiledMesh from '../MainTiledMesh';
+import Camera from 'loggie/core/camera/Camera';
 import Footer from './Footer';
 import GameContent from './GameContent';
+import { GameData } from '../HyperchipGame';
+import GameObject from 'loggie/core/gameObject/GameObject';
+import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import Header from './Header';
+import LoggieApplication from 'loggie/LoggieApplication';
+import MainTiledMesh from '../MainTiledMesh';
+import MathUtils from 'loggie/utils/MathUtils';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
+import ScreenInfo from 'loggie/core/screen/ScreenInfo';
+import { Signal } from 'signals';
 
 export default class GameInfoPanel extends GameObject {
     public panelContainer!: GameViewContainer;
@@ -104,6 +104,11 @@ export default class GameInfoPanel extends GameObject {
     showSection(gameData: GameData) {
         this.currentSection = gameData;
 
+        gtag('event', 'button_click', {
+            'event_category': 'button',
+            'event_label': this.currentSection.id
+          });
+
         this.footer.setData(gameData)
         this.footer.setLogo(PIXI.Texture.from(gameData.mainThumb))
         this.header.setTitle(this.currentSection.title, this.currentSection.mainColor)
@@ -183,11 +188,11 @@ export default class GameInfoPanel extends GameObject {
 
 
 
-        this.panelShadow.width = this.panel.width * 1.1
-        this.panelShadow.height = this.panel.height * 1.1
+        this.panelShadow.width = this.panel.width * 1.15
+        this.panelShadow.height = this.panel.height * 1.15
 
-        this.panelShadow.x = this.panel.x - this.panelShadow.width * 0.05
-        this.panelShadow.y = -this.panelShadow.height / 2
+        this.panelShadow.x = this.panel.x - this.panelShadow.width * 0.075
+        this.panelShadow.y = this.panel.y - this.panelShadow.height * 0.075
 
 
 

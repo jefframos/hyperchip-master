@@ -2,27 +2,27 @@ import * as PIXI from 'pixi.js';
 
 import StateMachine, { State } from './StateMachine';
 
-import gsap from 'gsap';
-import LoggieApplication from 'loggie/LoggieApplication';
-import Loggie from 'loggie/core/Loggie';
-import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
+import AboutPanel from './infoPanel/AboutPanel';
+import BitmapTextButton from './BitmapTextButton';
+import { ColorStop } from 'loggie/utils/color/ColorStop';
+import ColorUtils from 'loggie/utils/color/ColorUtils';
+import Ease from 'loggie/utils/tween2/Ease';
+import { EaseFunction } from 'loggie/utils/tween2/Tweener';
+import GameInfoPanel from './infoPanel/GameInfoPanel';
 import GameObject from 'loggie/core/gameObject/GameObject';
-import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import GameViewSprite from 'loggie/core/view/GameViewSprite';
 import GameViewUtils from 'loggie/core/view/GameViewUtils';
 import InteractiveEventUtils from 'loggie/utils/InteractiveEventUtils';
+import Loggie from 'loggie/core/Loggie';
+import LoggieApplication from 'loggie/LoggieApplication';
 import MathUtils from 'loggie/utils/MathUtils';
-import ViewUtils from 'loggie/utils/ViewUtils';
-import { ColorStop } from 'loggie/utils/color/ColorStop';
-import ColorUtils from 'loggie/utils/color/ColorUtils';
-import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
-import Ease from 'loggie/utils/tween2/Ease';
-import { EaseFunction } from 'loggie/utils/tween2/Tweener';
-import BitmapTextButton from './BitmapTextButton';
 import MeshGrid from './MeshGrid';
-import AboutPanel from './infoPanel/AboutPanel';
-import GameInfoPanel from './infoPanel/GameInfoPanel';
+import PerspectiveCamera from 'loggie/core/camera/PerspectiveCamera';
+import PromiseUtils from 'loggie/utils/promise/PromiseUtils';
+import { RenderLayers } from 'loggie/core/render/RenderLayers';
+import ViewUtils from 'loggie/utils/ViewUtils';
+import gsap from 'gsap';
 
 export interface GameData {
     id: string;
@@ -498,7 +498,6 @@ export default class HyperchipGame extends GameObject {
 
         this.eclipse.gameObject.transform.position.copy(this.mapCenter.transform.position)
 
-        console.log(this.menuCollapsed)
         if (this.menuCollapsed) {
             if (PIXI.isMobile.any && this.loggie.overlay.isPortrait) {
                 this.buttonsTargetPosition = this.loggie.overlay.right + 50

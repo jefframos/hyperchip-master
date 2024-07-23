@@ -2,16 +2,16 @@ import * as PIXI from 'pixi.js';
 
 import gsap, { Back } from 'gsap';
 
-import LoggieApplication from 'loggie/LoggieApplication';
+import BitmapTextButton from '../BitmapTextButton';
 import Camera from 'loggie/core/camera/Camera';
+import { GameData } from '../HyperchipGame';
 import GameObject from 'loggie/core/gameObject/GameObject';
+import GameViewContainer from 'loggie/core/view/GameViewContainer';
+import LoggieApplication from 'loggie/LoggieApplication';
+import PeopleCard from './PeopleCard';
 import { RenderLayers } from 'loggie/core/render/RenderLayers';
 import ScreenInfo from 'loggie/core/screen/ScreenInfo';
-import GameViewContainer from 'loggie/core/view/GameViewContainer';
 import { Signal } from 'signals';
-import BitmapTextButton from '../BitmapTextButton';
-import { GameData } from '../HyperchipGame';
-import PeopleCard from './PeopleCard';
 
 export interface PeopleData {
     id: string;
@@ -82,15 +82,17 @@ export default class AboutPanel extends GameObject {
             this.onHidePanel.dispatch();
         })
 
+        setTimeout(() => {
 
-        if (PIXI.Assets.get('about-data.json')) {
-            PIXI.Assets.get('about-data.json').people.forEach((element: PeopleData) => {
-                this.peopleData.set(element.name, element)
-                const ppCard = new PeopleCard(element)
-                this.panelContainer.view.addChild(ppCard)
-                this.peopleCards.push(ppCard)
-            });
-        }
+            if (PIXI.Assets.get('about-data.json')) {
+                PIXI.Assets.get('about-data.json').people.forEach((element: PeopleData) => {
+                    this.peopleData.set(element.name, element)
+                    const ppCard = new PeopleCard(element)
+                    this.panelContainer.view.addChild(ppCard)
+                    this.peopleCards.push(ppCard)
+                });
+            }
+        }, 300);
 
 
     }
@@ -107,12 +109,16 @@ export default class AboutPanel extends GameObject {
     }
     showSection() {
 
+        gtag('event', 'show_about', {
+            'event_category': 'button'
+        });
         gsap.killTweensOf(this.panelContainer.view)
         gsap.killTweensOf(this.panelContainer.view.scale)
         this.panelContainer.view.visible = true;
         this.panelContainer.view.alpha = 0
-        gsap.to(this.panelContainer.view, { duration: 0.25, alpha: 1, delay: 0.85 })
-        gsap.to(this.panelContainer.view.scale, { duration: 0.8, x: 1.5, y: 1.5, delay: 0.5, ease: Back.easeOut })
+        //this.panelContainer.view.scale.set(0.8, 0.9)
+        gsap.to(this.panelContainer.view, { duration: 0.25, alpha: 1, delay: 0.5 })
+        //gsap.to(this.panelContainer.view.scale, { duration: 0.8, x: 1.5, y: 1.5, delay: 0.5, ease: Back.easeOut })
     }
     update(delta: number, unscaledTime: number) {
         super.update(delta, unscaledTime);
@@ -149,7 +155,7 @@ export default class AboutPanel extends GameObject {
                 this.panel.y = -this.panel.height / 2// - this.panel.height * 0.2
             } else {
 
-                this.panel.height = Math.max(0, this.loggie.overlay.down * 0.7)
+                this.panel.height = Math.max(0, this.loggie.overlay.down * 0.9)
                 this.panel.y = -this.panel.height / 2 //- this.panel.height * 0.2
             }
 
@@ -171,11 +177,11 @@ export default class AboutPanel extends GameObject {
 
         }
 
-        this.panelShadow.width = this.panel.width * 1.1
-        this.panelShadow.height = this.panel.height * 1.1
+        this.panelShadow.width = this.panel.width * 1.15
+        this.panelShadow.height = this.panel.height * 1.15
 
-        this.panelShadow.x = this.panel.x - this.panelShadow.width * 0.05
-        this.panelShadow.y = this.panel.y //- this.panelShadow.height / 2
+        this.panelShadow.x = this.panel.x - this.panelShadow.width * 0.075
+        this.panelShadow.y = this.panel.y - this.panelShadow.height * 0.075
 
         this.closeButton.container.x = this.panel.x + this.panel.width - 80
         this.closeButton.container.y = this.panel.y //- this.panel.height / 2

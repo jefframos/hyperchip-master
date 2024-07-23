@@ -1,5 +1,6 @@
-import gsap from 'gsap';
 import { Assets, Container, Sprite, Texture } from 'pixi.js';
+
+import gsap from 'gsap';
 
 export default class CycleTextureChangerAsync extends Container {
     private currentSprite: Sprite;
@@ -93,6 +94,8 @@ export default class CycleTextureChangerAsync extends Container {
         }
     }
     hide() {
+        this.currentSprite.texture = Texture.EMPTY
+        this.transitionSprite.texture = Texture.EMPTY
         this.fadeProgress = 0;
         this.currentIndex = 0;
         this.elapsedTime = 0;
